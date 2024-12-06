@@ -1,0 +1,73 @@
+{
+  "users": {
+    "$uid": {
+      "name": "string",
+      "email": "string",
+      "role": "string",
+      "created_at": "timestamp"
+    }
+  },
+
+  "orders": {
+    "$order_id": {
+      "user_id": "string",
+      "order_name": "string",
+      "customer_phone": "string",
+      "customer_email": "string",
+      "status": "string",
+      "order_type": "string",
+      "created_date": "timestamp",
+      "closed_date": "timestamp | null",
+      "payment_type": "string | null",
+      "tip_amount": "number | null",
+      "total_amount": "number"
+    }
+  },
+
+  "order_items": {
+    "$order_item_id": {
+      "order_id": "string",
+      "menu_item_id": "string | null",
+      "item_name": "string",
+      "item_price": "number",
+      "quantity": "number",
+      "created_at": "timestamp"
+    }
+  },
+
+  "menu_items": {
+    "$menu_id": {
+      "name": "string",
+      "description": "string",
+      "price": "number",
+      "image_url": "string",
+      "is_on_sale": "boolean",
+      "is_active": "boolean",
+      "created_at": "timestamp",
+      "updated_at": "timestamp"
+    }
+  },
+
+  "revenue": {
+    "$revenue_id": {
+      "order_id": "string",
+      "total_amount": "number",
+      "tip_amount": "number",
+      "payment_type": "string",
+      "order_type": "string",
+      "date": "timestamp"
+    }
+  },
+
+  "talent": {
+    "$talent_id": {
+      "name": "string",
+      "description": "string",
+      "show_date": "timestamp",
+      "is_virtual": "boolean",
+      "status": "string",
+      "created_at": "timestamp",
+      "updated_at": "timestamp"
+    }
+  }
+}
