@@ -1,4 +1,4 @@
-import { signIn } from '../utils/auth';
+import { signIn } from '../../utils/auth';
 
 // GOOGLE LOGIN BUTTON
 const loginButton = () => {
