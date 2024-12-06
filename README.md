@@ -3,7 +3,7 @@
 
 Here I am putting an overview of what my project is about. It comes below the name of my project so that others can read what it is about and get more details.
 
-[View App](#your-link)
+[View App](#https://hhpw.netlify.app/)
 
 ## Get Started <!-- OPTIONAL, but doesn't hurt -->
 PLACE CODE SNIPPET HERE
@@ -23,10 +23,11 @@ PLACE CODE SNIPPET HERE
 https://www.loom.com/share/829b90d831ea441ba2db6bea724af210
 
 ## Relevant Links <!-- Link to all the things that are required outside of the ones that have their own section -->
-- [Check out the deployed site](https://hhpw.netlify.app/)
-- [Wireframes](#your-link)
-- [Project Board](https://github.com/orgs/nss-evening-cohort-29/projects/16/views/1)
+- [Check out the deployed site](#https://hhpw.netlify.app/)
+- [Wireframes](#https://www.figma.com/design/4y3EZddALuBR3ouSEM57Np/MVP?node-id=0-1&node-type=canvas&t=36KKRBxJcBvLpW2j-0)
+- [Project Board](#https://github.com/orgs/nss-evening-cohort-29/projects/16/views/1)
 - [ERD](https://dbdiagram.io/d/67464969e9daa85acad02c77)
+- [Flow Chart](https://github.com/nss-evening-cohort-29/hhpw-team-elpheba/blob/d12555b5906aeb437d75cd472cb914e5fbee40e4/docs/flowchart%20HHPW.png)
 
 ## Code Snippet <!-- OPTIONAL, but doesn't hurt -->
 PLACE CODE SNIPPET HERE
