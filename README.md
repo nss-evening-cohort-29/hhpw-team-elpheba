@@ -23,9 +23,9 @@ PLACE CODE SNIPPET HERE
 https://www.loom.com/share/829b90d831ea441ba2db6bea724af210
 
 ## Relevant Links <!-- Link to all the things that are required outside of the ones that have their own section -->
-- [Check out the deployed site](#your-link)
+- [Check out the deployed site](https://hhpw.netlify.app/)
 - [Wireframes](#your-link)
-- [Project Board](#your-link)
+- [Project Board](https://github.com/orgs/nss-evening-cohort-29/projects/16/views/1)
 - [ERD](https://dbdiagram.io/d/67464969e9daa85acad02c77)
 
 ## Code Snippet <!-- OPTIONAL, but doesn't hurt -->
