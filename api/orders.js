@@ -1,7 +1,8 @@
 import client from '../utils/client';
-
+// import the firebase url and set to endpoint
 const endpoint = client.databaseURL;
 
+// Get all orders based on uid
 const getOrders = (uid) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/orders.json?orderBy="user_id"&equalTo="${uid}"`, {
     method: 'GET',
@@ -20,6 +21,7 @@ const getOrders = (uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+// Get a single order
 const getSingleOrder = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/orders/${firebaseKey}.json`, {
     method: 'GET',
@@ -32,7 +34,68 @@ const getSingleOrder = (firebaseKey) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+// Create a new order (call this function when submitting the form to create an order)
+const createOrder = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/orders.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+// Update an order
+const updateOrder = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/orders/${payload.firebaseKey}.json`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
+});
+
+// Show only open orders
+const getOpenOrders = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/orders.json?orderBy="user_id"&equalTo="${uid}"`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      const isOpen = Object.values(data).filter((item) => item.status);
+      resolve(isOpen);
+    })
+    .catch(reject);
+});
+
+// Delete an order
+const deleteSingleOrder = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/orders/${firebaseKey}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
 export {
   getOrders,
-  getSingleOrder
+  getSingleOrder,
+  createOrder,
+  updateOrder,
+  getOpenOrders,
+  deleteSingleOrder
 };
