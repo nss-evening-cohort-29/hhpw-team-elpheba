@@ -1,73 +1,68 @@
 {
   "users": {
-    "$uid": {
-      "name": "string",
-      "email": "string",
-      "role": "string",
-      "created_at": "timestamp"
+    "uid_12345": {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "admin",
+      "created_at": 1699180800000
     }
   },
-
   "orders": {
-    "$order_id": {
-      "user_id": "string",
-      "order_name": "string",
-      "customer_phone": "string",
-      "customer_email": "string",
-      "status": "string",
-      "order_type": "string",
-      "created_date": "timestamp",
-      "closed_date": "timestamp | null",
-      "payment_type": "string | null",
-      "tip_amount": "number | null",
-      "total_amount": "number"
+    "order_12345": {
+      "user_id": "uid_12345",
+      "order_name": "Sample Order",
+      "customer_phone": "555-555-5555",
+      "customer_email": "customer@example.com",
+      "status": "open",
+      "order_type": "dine_in",
+      "created_date": 1699180800000,
+      "closed_date": null,
+      "payment_type": null,
+      "tip_amount": null,
+      "total_amount": 59.99
     }
   },
-
   "order_items": {
-    "$order_item_id": {
-      "order_id": "string",
-      "menu_item_id": "string | null",
-      "item_name": "string",
-      "item_price": "number",
-      "quantity": "number",
-      "created_at": "timestamp"
+    "order_item_12345": {
+      "order_id": "order_12345",
+      "menu_item_id": "menu_12345",
+      "item_name": "Burger",
+      "item_price": 9.99,
+      "quantity": 2,
+      "created_at": 1699180800000
     }
   },
-
   "menu_items": {
-    "$menu_id": {
-      "name": "string",
-      "description": "string",
-      "price": "number",
-      "image_url": "string",
-      "is_on_sale": "boolean",
-      "is_active": "boolean",
-      "created_at": "timestamp",
-      "updated_at": "timestamp"
+    "menu_12345": {
+      "name": "Burger",
+      "description": "A delicious burger",
+      "price": 9.99,
+      "image_url": "https://example.com/burger.png",
+      "is_on_sale": false,
+      "is_active": true,
+      "created_at": 1699180800000,
+      "updated_at": 1699180800000
     }
   },
-
   "revenue": {
-    "$revenue_id": {
-      "order_id": "string",
-      "total_amount": "number",
-      "tip_amount": "number",
-      "payment_type": "string",
-      "order_type": "string",
-      "date": "timestamp"
+    "revenue_12345": {
+      "order_id": "order_12345",
+      "total_amount": 59.99,
+      "tip_amount": 10,
+      "payment_type": "cash",
+      "order_type": "dine_in",
+      "date": 1699180800000
     }
   },
-
   "talent": {
-    "$talent_id": {
-      "name": "string",
-      "description": "string",
-      "show_date": "timestamp",
-      "is_virtual": "boolean",
-      "status": "string",
-      "created_at": "timestamp",
-      "updated_at": "timestamp"
+    "talent_12345": {
+      "name": "Acoustic Band",
+      "description": "Live music performance",
+      "show_date": 1699180800000,
+      "is_virtual": false,
+      "status": "scheduled",
+      "created_at": 1699180800000,
+      "updated_at": 1699180800000
     }
   }
 }
