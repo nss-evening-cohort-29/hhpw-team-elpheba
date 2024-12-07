@@ -20,6 +20,7 @@ const ViewDirectorBasedOnUserAuthStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // person is logged in do something...
+      document.querySelector('#login-form-container').innerHTML = ''; // Clear login button
       navBar(user); // Pass user data to navbar
       logoutButton(); // Add logout button to navbar
       homePage(user); // Show homepage with user-specific content
