@@ -1,4 +1,5 @@
 import client from '../utils/client';
+
 const endpoint = client.databaseURL;
 
 // GET ALL ORDER_ITEMS
@@ -14,13 +15,13 @@ const getOrderItems = (uid) => new Promise((resolve, reject) => {
       if (data) {
         resolve(Object.values(data));
       } else {
-        resolve([]); 
+        resolve([]);
       }
     })
     .catch(reject);
 });
 
-// GET SINGLE ORDER_ITEM 
+// GET SINGLE ORDER_ITEM
 // We likely won't need to use this, but leaving it just in case
 const getSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/order_items/${firebaseKey}.json`, {
@@ -75,5 +76,6 @@ const deleteSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => 
     .catch(reject);
 });
 
-
-export { getOrderItems, getSingleOrderItem, createOrderItem, updateOrderItem, deleteSingleOrderItem };
+export {
+  getOrderItems, getSingleOrderItem, createOrderItem, updateOrderItem, deleteSingleOrderItem
+};
