@@ -1,9 +1,9 @@
 import client from '../utils/client';
-
 const endpoint = client.databaseURL;
 
-const getOrders = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/orders.json?orderBy="user_id"&equalTo="${uid}"`, {
+// GET ALL ORDER_ITEMS
+const getOrderItems = (uid) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items.json?orderBy="uid"&equalTo="${uid}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -14,25 +14,23 @@ const getOrders = (uid) => new Promise((resolve, reject) => {
       if (data) {
         resolve(Object.values(data));
       } else {
-        resolve([]);
+        resolve([]); 
       }
     })
     .catch(reject);
 });
 
-const getSingleOrder = (firebaseKey) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/orders/${firebaseKey}.json`, {
+// GET SINGLE ORDER_ITEM 
+const getSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items/${firebaseKey}.json`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
-    .then((data) => resolve(data))
+    .then((data) => resolve(data)) // will resolve a single object
     .catch(reject);
 });
 
-export {
-  getOrders,
-  getSingleOrder
-};
+export { getOrderItems, getSingleOrderItem };
