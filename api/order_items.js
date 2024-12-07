@@ -1,4 +1,5 @@
-const endpoint = 'https://hhpw-d5858-default-rtdb.firebaseio.com';
+import client from '../utils/client';
+const endpoint = client.databaseURL;
 
 // GET ALL ORDER_ITEMS
 const getOrderItems = (uid) => new Promise((resolve, reject) => {
