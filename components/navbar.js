@@ -15,15 +15,11 @@ const navBar = (user) => {
             <li class="nav-item">
               <a class="nav-link active" aria-current="page" href="#" id="home">Home</a>
             </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="true" id="ordersDropdown">
-                Orders
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#" id="view-orders">View Orders</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="#" id="create-order">Create Order</a></li>
-              </ul>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="view-orders">View Orders</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="create-order">Create Order</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#" id="view-revenue">View Revenue</a>
