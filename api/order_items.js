@@ -62,4 +62,18 @@ const updateOrderItem = (payload) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getOrderItems, getSingleOrderItem, createOrderItem, updateOrderItem };
+// DELETE AN ORDER_ITEM
+const deleteSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items/${firebaseKey}.json`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+
+export { getOrderItems, getSingleOrderItem, createOrderItem, updateOrderItem, deleteSingleOrderItem };
