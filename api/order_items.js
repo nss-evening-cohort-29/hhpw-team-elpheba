@@ -21,6 +21,7 @@ const getOrderItems = (uid) => new Promise((resolve, reject) => {
 });
 
 // GET SINGLE ORDER_ITEM 
+// We likely won't need to use this, but leaving it just in case
 const getSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/order_items/${firebaseKey}.json`, {
     method: 'GET',
@@ -33,4 +34,32 @@ const getSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-export { getOrderItems, getSingleOrderItem };
+// CREATE ORDER_ITEM
+const createOrderItem = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items.json`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then((data) => resolve(data))
+    .catch(reject);
+});
+
+// UPDATE ORDER_ITEM
+const updateOrderItem = (payload) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items/${payload.firebaseKey}.json`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(payload),
+  })
+    .then((response) => response.json())
+    .then(resolve)
+    .catch(reject);
+});
+
+export { getOrderItems, getSingleOrderItem, createOrderItem, updateOrderItem };
