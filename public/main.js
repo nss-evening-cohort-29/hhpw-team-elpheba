@@ -4,16 +4,24 @@ import '../styles/main.scss';
 import '../styles/navbar.scss';
 
 const init = () => {
-  // Create navigation container
-  const domString = `
+  document.querySelector('#app').innerHTML = `
     <div id="navigation"></div>
-    <div id="login-form-container"></div>
-    <div id="app"></div>
-  `;
-  document.querySelector('#app').innerHTML = domString;
+    <div id="main-container">
+      <div id="login-form-container"></div>
+      <div id="form-container"></div>
+      <div id="orders-container"></div>
+      <div id="admin-dashboard"></div>
+    </div>`;
 
-  // USE WITH FIREBASE AUTH
-  ViewDirectorBasedOnUserAuthStatus();
+  // Wait for DOM to be fully loaded before initializing Firebase
+  setTimeout(() => {
+    ViewDirectorBasedOnUserAuthStatus();
+  }, 0);
 };
 
-init();
+// Ensure DOM is loaded before initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

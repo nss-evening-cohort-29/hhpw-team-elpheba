@@ -1,8 +1,7 @@
 const clearDOM = () => {
-  document.querySelector('#main-container').innerHTML = '';
-  document.querySelector('#navigation').innerHTML = '';
-  document.querySelector('#login-form-container').innerHTML = '';
-  document.querySelector('#app').innerHTML = '';
+  // Only clear the view content, preserve the navbar
+  const viewContainer = document.querySelector('#admin-dashboard');
+  if (viewContainer) viewContainer.innerHTML = '';
 };
 
 export default clearDOM;
