@@ -1,10 +1,8 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import loginButton from '../components/buttons/loginButton';
-import logoutButton from '../components/buttons/logoutButton';
 import client from './client';
-import navBar from '../components/navbar';
-import homePage from '../pages/homePage';
+import startApp from './startApp';
 
 // Keep track of initialization
 let isInitialized = false;
@@ -20,10 +18,7 @@ const ViewDirectorBasedOnUserAuthStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // person is logged in do something...
-      document.querySelector('#login-form-container').innerHTML = ''; // Clear login button
-      navBar(user); // Pass user data to navbar
-      logoutButton(); // Add logout button to navbar
-      homePage(user); // Show homepage with user-specific content
+      startApp(user);
     } else {
       // person is NOT logged in
       document.querySelector('#navigation').innerHTML = ''; // Hide navbar
