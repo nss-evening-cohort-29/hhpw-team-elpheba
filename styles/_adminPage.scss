@@ -1,0 +1,111 @@
+// 1. Admin Page Container
+.admin-page, .admin-dashboard {
+  padding: 1rem;
+  // Reduce outer padding for a tighter layout
+}
+
+// 2. Header and Titles
+.admin-page .admin-header, .admin-dashboard .admin-header {
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+
+  h1 {
+    font-size: 1.8rem; // Down from 2.5rem
+    margin-bottom: 0.5rem;
+  }
+
+  .lead {
+    font-size: 1rem; // Down from 1.2rem
+  }
+}
+
+// 3. Cards and Stats
+.admin-page .card, .admin-dashboard .card {
+  box-shadow: 0 1px 3px rgba($color-black, 0.1);
+  border: none;
+  margin-bottom: 1rem; // Slightly tighter spacing between cards
+
+  .card-header {
+    padding: 0.75rem 1rem;
+    h3, h4 {
+      font-size: 1.25rem; // Slightly smaller headings
+    }
+  }
+
+  .card-body {
+    padding: 1rem;
+  }
+}
+
+.admin-page .stats-item, .admin-dashboard .stats-item {
+  padding: 1rem; // Reduce from 1.5rem
+  h4 {
+    font-size: 0.9rem; // Slightly smaller
+  }
+  .h2 {
+    font-size: 1.5rem; // Down from default
+  }
+  i {
+    font-size: 1.5rem; // Slightly smaller icon
+  }
+}
+
+// Adjusting the main actions grid buttons
+.admin-page .card-body.d-grid .btn,
+.admin-dashboard .card-body.d-grid .btn {
+  padding: 0.5rem 1rem; // Less padding for a more compact look
+  font-size: 0.9rem;
+}
+
+// Reduce spacing in the activity feed
+.admin-page .activity-feed, .admin-dashboard .activity-feed {
+  padding: 0.5rem;
+  max-height: 250px; // Slightly smaller max-height
+
+  .activity-item {
+    padding: 0.5rem;
+    .activity-icon {
+      width: 30px;
+      height: 30px;
+      font-size: 0.9rem;
+    }
+    .activity-content .activity-title {
+      font-size: 0.9rem;
+    }
+    .activity-content .activity-time {
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// 4. Buttons and Inputs
+.admin-page .btn, .admin-dashboard .btn {
+  padding: 0.5rem 1rem; // Reduced padding
+  font-size: 0.9rem;
+  border-radius: 0.25rem;
+  i {
+    margin-right: 0.3rem;
+    font-size: 0.9rem; // Slightly smaller icon
+  }
+}
+
+// 5. Responsive Adjustments
+@media (max-width: 768px) {
+  .admin-page .admin-header h1,
+  .admin-dashboard .admin-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .admin-page .stats-item,
+  .admin-dashboard .stats-item {
+    margin-bottom: 0.5rem;
+    .h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  .admin-page .card,
+  .admin-dashboard .card {
+    margin-bottom: 0.5rem;
+  }
+}

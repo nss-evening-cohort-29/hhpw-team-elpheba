@@ -1,11 +1,12 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import loginButton from '../components/buttons/loginButton';
+import loginPage from '../pages/loginPage';
 import logoutButton from '../components/buttons/logoutButton';
 import client from './client';
 import navBar from '../components/navbar';
 import navigationEvents from '../events/navigationEvents';
 import clearDom from './clearDom';
+import showAdminDashboard from '../pages/adminPage';
 
 const ViewDirectorBasedOnUserAuthStatus = () => {
   firebase.initializeApp(client);
@@ -13,7 +14,6 @@ const ViewDirectorBasedOnUserAuthStatus = () => {
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
       // person is logged in
-      // First, ensure proper DOM structure
       document.querySelector('#app').innerHTML = `
         <div id="navigation"></div>
         <div id="main-container">
@@ -25,35 +25,24 @@ const ViewDirectorBasedOnUserAuthStatus = () => {
       logoutButton();
       navigationEvents(user);
 
-      // Get current page from URL hash or default to home
+      // Get current page from URL hash or default to admin dashboard
       const currentHash = window.location.hash.slice(1);
       if (currentHash) {
-        // If there's a hash, trigger the corresponding nav item
         const navItem = document.querySelector(`#${currentHash}`);
         if (navItem) {
           navItem.click();
         } else {
-          // If hash doesn't match any nav item, go home
-          document.querySelector('#home').click();
+          // If invalid hash, show admin dashboard
+          showAdminDashboard(user);
         }
       } else {
-        // No hash, go home
-        document.querySelector('#home').click();
+        // Default to admin dashboard when no hash
+        showAdminDashboard(user);
       }
     } else {
       // person is NOT logged in
       clearDom();
-      const domString = `
-        <div class="container text-center mt-5">
-          <div class="row justify-content-center">
-            <div class="col-md-6">
-              <h1 class="display-4 mb-4">Welcome to Hip Hop Pizza & Wings</h1>
-              <div id="login-form-container" class="mt-4"></div>
-            </div>
-          </div>
-        </div>`;
-      document.querySelector('#app').innerHTML = domString;
-      loginButton();
+      loginPage();
     }
   });
 };

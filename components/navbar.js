@@ -1,4 +1,5 @@
 import renderToDOM from '../utils/renderToDom';
+import showAdminDashboard from '../pages/adminPage';
 
 const navBar = (user) => {
   const domString = `
@@ -13,8 +14,8 @@ const navBar = (user) => {
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#" id="home">
-                <i class="fas fa-home"></i> Home
+              <a class="nav-link" href="#" id="admin-home">
+                <i class="fas fa-home"></i> Dashboard
               </a>
             </li>
             <li class="nav-item">
@@ -45,8 +46,8 @@ const navBar = (user) => {
 
   renderToDOM('#navigation', domString);
 
-  // Get current page from URL hash or default to home
-  const currentPage = window.location.hash.slice(1) || 'home';
+  // Get current page from URL hash or default to admin-home
+  const currentPage = window.location.hash.slice(1) || 'admin-home';
 
   // Add active state handling
   const setActiveLink = (clickedId) => {
@@ -62,7 +63,10 @@ const navBar = (user) => {
     if (clickedLink) {
       if (clickedLink.classList.contains('dropdown-item')) {
         // If it's a dropdown item, make the dropdown toggle active
-        document.querySelector('#navbarDropdown').classList.add('active');
+        const dropdownToggle = document.querySelector('#navbarDropdown');
+        if (dropdownToggle) {
+          dropdownToggle.classList.add('active');
+        }
       } else {
         clickedLink.classList.add('active');
       }
@@ -86,16 +90,16 @@ const navBar = (user) => {
     });
   });
 
-  // Add logo click handler to always show admin panel
-  document.querySelector('#logo-admin-panel').addEventListener('click', (e) => {
+  // Add logo and home click handlers to show admin dashboard
+  const showAdminHome = (e) => {
     e.preventDefault();
-    window.location.hash = 'home';
-    setActiveLink('home');
-    const homeLink = document.querySelector('#home');
-    if (homeLink) {
-      homeLink.click();
-    }
-  });
+    window.location.hash = 'admin-home';
+    setActiveLink('admin-home');
+    showAdminDashboard(user);
+  };
+
+  document.querySelector('#logo-admin-panel').addEventListener('click', showAdminHome);
+  document.querySelector('#admin-home').addEventListener('click', showAdminHome);
 };
 
 export default navBar;
