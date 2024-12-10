@@ -2,22 +2,17 @@ import client from '../utils/client';
 
 const endpoint = client.databaseURL;
 
-// GET ALL ORDER_ITEMS
-const getOrderItems = (uid) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}/order_items.json?orderBy="uid"&equalTo="${uid}"`, {
+// GET ORDER_ITEMS BY ORDER
+// we don't need to pass uid into this, because it is only accessible by clicking the details button on an order
+const getOrderItems = (firebaseKey) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/order_items.json?orderBy="order_id"&equalTo="${firebaseKey}"`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   })
     .then((response) => response.json())
-    .then((data) => {
-      if (data) {
-        resolve(Object.values(data));
-      } else {
-        resolve([]);
-      }
-    })
+    .then((data) => resolve(Object.values(data))) // Resolves an array of order items
     .catch(reject);
 });
 
