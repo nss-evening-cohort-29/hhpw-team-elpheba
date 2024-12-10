@@ -1,7 +1,19 @@
 const clearDOM = () => {
-  // Only clear the view content, preserve the navbar
-  const viewContainer = document.querySelector('#admin-dashboard');
-  if (viewContainer) viewContainer.innerHTML = '';
+  // Clear only content containers, preserve navigation
+  const containers = [
+    '#form-container',
+    '#orders-container',
+    '#admin-dashboard',
+    '#view',
+    '#add-button'
+  ];
+
+  containers.forEach((container) => {
+    const element = document.querySelector(container);
+    if (element) {
+      element.innerHTML = '';
+    }
+  });
 };
 
 export default clearDOM;

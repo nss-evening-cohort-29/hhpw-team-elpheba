@@ -1,48 +1,33 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import loginPage from '../pages/loginPage';
-import logoutButton from '../components/buttons/logoutButton';
+
+// Internal imports alphabetically
 import client from './client';
-import navBar from '../components/navbar';
-import navigationEvents from '../events/navigationEvents';
-import clearDom from './clearDom';
-import showAdminDashboard from '../pages/adminPage';
+import loginPage from '../pages/loginPage';
+import startApp from '../startApp';
+
+// Keep track of initialization
+let isInitialized = false;
 
 const ViewDirectorBasedOnUserAuthStatus = () => {
-  firebase.initializeApp(client);
+  if (!isInitialized) {
+    firebase.initializeApp(client);
+    isInitialized = true;
+  }
 
   firebase.auth().onAuthStateChanged((user) => {
+    const appElement = document.querySelector('#app');
+
     if (user) {
-      // person is logged in
-      document.querySelector('#app').innerHTML = `
-        <div id="navigation"></div>
-        <div id="main-container">
-          <div id="admin-dashboard"></div>
-        </div>`;
-
-      // Setup navigation
-      navBar(user);
-      logoutButton();
-      navigationEvents(user);
-
-      // Get current page from URL hash or default to admin dashboard
-      const currentHash = window.location.hash.slice(1);
-      if (currentHash) {
-        const navItem = document.querySelector(`#${currentHash}`);
-        if (navItem) {
-          navItem.click();
-        } else {
-          // If invalid hash, show admin dashboard
-          showAdminDashboard(user);
-        }
-      } else {
-        // Default to admin dashboard when no hash
-        showAdminDashboard(user);
-      }
+      // If user is logged in, show app structure and start the app
+      appElement.style.paddingTop = '75px'; // Add padding for navbar
+      appElement.innerHTML = ''; // Clear everything first
+      startApp(user); // startApp will set up the structure and initialize the app
     } else {
-      // person is NOT logged in
-      clearDom();
-      loginPage();
+      // If no user, show login page
+      appElement.style.paddingTop = '0'; // Remove padding for login page
+      appElement.innerHTML = ''; // Clear everything first
+      loginPage(); // Let loginPage handle the rendering
     }
   });
 };

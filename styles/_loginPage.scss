@@ -1,7 +1,7 @@
 @import "./_variables.scss";
 
 #app {
-  .login-page {
+  #login-page {
     // Full-screen fixed positioning for the login page overlay
     position: fixed;
     inset: 0;
@@ -27,7 +27,7 @@
         content: '';
         position: absolute;
         inset: 0;
-        background: url('../assets/images/login-background.png')
+        background: url('../../assets/images/login-background.png')
           center/cover no-repeat;
         z-index: -1;
         filter: blur(2px);
@@ -45,11 +45,11 @@
         backdrop-filter: blur(10px);
         box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 
-        h1 {
+        h3 {
           margin-bottom: 2rem;
           font-size: 2.5rem;
           font-weight: 300;
-          color: #fff;
+          color: #333;
           text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 

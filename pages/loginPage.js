@@ -4,13 +4,13 @@ import '../styles/main.scss';
 
 const loginPage = () => {
   const domString = `
-    <div class="login-page">
+    <div id="login-page">
       <div class="login-container">
         <div class="login-card">
           <h3>Hip Hop Pizza & Wings</h3>
           <button id="google-auth" class="google-sign-in-btn">
             <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google Icon" />
-            Google
+            Sign in with Google
           </button>
         </div>
       </div>

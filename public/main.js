@@ -3,19 +3,11 @@ import 'bootstrap'; // import bootstrap elements and js
 import '../styles/main.scss';
 
 const init = () => {
-  document.querySelector('#app').innerHTML = `
-    <div id="navigation"></div>
-    <div id="main-container">
-      <div id="login-form-container"></div>
-      <div id="form-container"></div>
-      <div id="orders-container"></div>
-      <div id="admin-dashboard"></div>
-    </div>`;
+  // Create a clean slate for the app
+  document.querySelector('#app').innerHTML = '';
 
-  // Wait for DOM to be fully loaded before initializing Firebase
-  setTimeout(() => {
-    ViewDirectorBasedOnUserAuthStatus();
-  }, 0);
+  // Initialize the view director
+  ViewDirectorBasedOnUserAuthStatus();
 };
 
 // Ensure DOM is loaded before initialization

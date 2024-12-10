@@ -21,11 +21,65 @@ body {
 #app {
   min-height: 100vh;
   position: relative;
-  padding-top: $navbar-height + 10px;
+}
+
+// Login Page Styles
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $background-color;
+  padding: 20px;
+}
+
+.login-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+}
+
+.login-card {
+  background: $color-white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba($color-black, 0.1);
+  text-align: center;
+
+  h3 {
+    margin-bottom: 1.5rem;
+    color: $color-dark-gray;
+    font-size: 1.8rem;
+  }
+}
+
+.google-sign-in-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid $color-light-gray;
+  border-radius: 4px;
+  background: $color-white;
+  color: $color-dark-gray;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  img {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background-color: darken($color-white, 5%);
+    box-shadow: 0 2px 4px rgba($color-black, 0.1);
+  }
 }
 
 // Import component styles
-@import "./_loginPage.scss";
 @import "./_navbar.scss";
 @import "./_adminPage.scss";
 
