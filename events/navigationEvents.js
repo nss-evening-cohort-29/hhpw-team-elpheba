@@ -3,6 +3,7 @@ import { getOrders } from '../api/orders';
 import { showOrders, emptyOrders } from '../pages/ordersPage';
 import showAdminDashboard from '../pages/adminPage';
 import renderToDOM from '../utils/renderToDom';
+import revenuePage from '../pages/revenuePage';
 
 const navigationEvents = (user) => {
   // Clear main container and reset view
@@ -54,6 +55,7 @@ const navigationEvents = (user) => {
         <div id="revenue-details"></div>
       </div>`;
     renderToDOM('#view', domString);
+    revenuePage();
   });
 };
 
