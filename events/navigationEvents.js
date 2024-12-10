@@ -1,6 +1,8 @@
 // navigationEvents.js
+import { getOrders } from '../api/orders';
+import { showOrders } from '../pages/ordersPage';
 
-const navigationEvents = () => {
+const navigationEvents = (user) => {
   // HOME
   document.querySelector('#home').addEventListener('click', (e) => {
     e.preventDefault();
@@ -10,7 +12,9 @@ const navigationEvents = () => {
   // VIEW ORDERS
   document.querySelector('#view-orders').addEventListener('click', (e) => {
     e.preventDefault();
-    // TODO: Add orders view rendering
+    console.warn('#view-orders clicked');
+
+    getOrders(user.uid).then(showOrders);
   });
 
   // CREATE ORDER
