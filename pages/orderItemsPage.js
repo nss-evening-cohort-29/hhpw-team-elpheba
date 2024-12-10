@@ -4,7 +4,9 @@ import renderToDOM from '../utils/renderToDom';
 // later, emptyOrderItems and showOrderItems will get called in domEvents
 
 const emptyOrderItems = () => {
-  const domString = '<h1>No Order Items</h1>';
+  const domString = `<h1>No Order Items</h1>
+      <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
+    <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
   renderToDOM('#view', domString);
 };
 
@@ -29,14 +31,10 @@ const showOrderItems = (array) => {
     `;
   });
   renderToDOM('#view', domString);
+  const btnString = `
+  <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
+  <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
+  renderToDOM('#add-button', btnString);
 };
 
-const btnString = `
-<button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
-<button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
-renderToDOM('#add-button', btnString);
-
-export {
-  emptyOrderItems,
-  showOrderItems
-};
+export { emptyOrderItems, showOrderItems };

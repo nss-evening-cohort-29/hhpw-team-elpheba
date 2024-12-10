@@ -24,8 +24,8 @@ const showOrders = (array) => {
             <li class="order-details-item">${item.order_type}</li>
           </ul>
           <div class="order-card-btns-container">
-            <a href="#" class="order-card-details--${item.firebaseKey}">View Details</a>
-            <a href="#" class="order-card-delete--${item.firebaseKey}">Delete</a>
+            <a href="#" id="order-card-details--${item.firebaseKey}">View Details</a>
+            <a href="#" id="order-card-delete--${item.firebaseKey}">Delete</a>
           </div>
         </div>
       </div>`;
