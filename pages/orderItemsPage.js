@@ -11,7 +11,7 @@ const emptyOrderItems = () => {
 const showOrderItems = (array) => {
   clearDom();
 
-  const total = `<h1>TOTAL: *PLACEHOLDER*</h1>` // TODO: insert logic for calculating the total
+  const total = '<h1>TOTAL: *PLACEHOLDER*</h1>'; // TODO: insert logic for calculating the total
 
   renderToDOM('#orders-container', total);
 
@@ -33,9 +33,7 @@ const showOrderItems = (array) => {
 
 const btnString = `
 <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
-<button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`
-;
-
+<button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
 renderToDOM('#add-button', btnString);
 
 export {

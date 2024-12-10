@@ -1,29 +1,33 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import loginButton from '../components/buttons/loginButton';
+
+// Internal imports alphabetically
 import client from './client';
-import startApp from './startApp';
+import loginPage from '../pages/loginPage';
+import startApp from '../startApp';
 
 // Keep track of initialization
 let isInitialized = false;
 
 const ViewDirectorBasedOnUserAuthStatus = () => {
-  // Only initialize once
   if (!isInitialized) {
     firebase.initializeApp(client);
     isInitialized = true;
   }
 
-  // Listen for auth state changes
   firebase.auth().onAuthStateChanged((user) => {
+    const appElement = document.querySelector('#app');
+
     if (user) {
-      // person is logged in do something...
-      startApp(user);
+      // If user is logged in, show app structure and start the app
+      appElement.style.paddingTop = '75px'; // Add padding for navbar
+      appElement.innerHTML = ''; // Clear everything first
+      startApp(user); // startApp will set up the structure and initialize the app
     } else {
-      // person is NOT logged in
-      document.querySelector('#navigation').innerHTML = ''; // Hide navbar
-      document.querySelector('#app').innerHTML = ''; // Clear app content
-      loginButton();
+      // If no user, show login page
+      appElement.style.paddingTop = '0'; // Remove padding for login page
+      appElement.innerHTML = ''; // Clear everything first
+      loginPage(); // Let loginPage handle the rendering
     }
   });
 };

@@ -1,19 +1,18 @@
 import ViewDirectorBasedOnUserAuthStatus from '../utils/viewDirector';
 import 'bootstrap'; // import bootstrap elements and js
 import '../styles/main.scss';
-import '../styles/navbar.scss';
 
 const init = () => {
-  // Create navigation container
-  const domString = `
-    <div id="navigation"></div>
-    <div id="login-form-container"></div>
-    <div id="app"></div>
-  `;
-  document.querySelector('#app').innerHTML = domString;
+  // Create a clean slate for the app
+  document.querySelector('#app').innerHTML = '';
 
-  // USE WITH FIREBASE AUTH
+  // Initialize the view director
   ViewDirectorBasedOnUserAuthStatus();
 };
 
-init();
+// Ensure DOM is loaded before initialization
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}

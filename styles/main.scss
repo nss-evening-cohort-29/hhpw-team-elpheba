@@ -1,57 +1,219 @@
 @import "~@fortawesome/fontawesome-free/css/all.min.css";
 @import "~bootstrap/scss/bootstrap";
+@import "./_variables.scss";
+@import "./_navbar.scss";
 
-// Custom variables
-$primary-color: #2c3e50;
-$secondary-color: #e74c3c;
-$background-color: #b1d4f660;
+// Reset and base styles
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
 
 body {
   background-color: $background-color;
-  color: $primary-color;
+  color: $text-color;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  position: relative;
 }
 
-// Jumbotron styling (Bootstrap 5 removed jumbotron)
-.jumbotron {
-  padding: 2rem 1rem;
-  margin-bottom: 2rem;
-  background-color: #ffffff;
+#app {
+  min-height: 100vh;
+  position: relative;
+}
+
+// Login Page Styles
+#login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: $background-color;
+  padding: 20px;
+}
+
+.login-container {
+  max-width: 400px;
+  width: 100%;
+  padding: 20px;
+}
+
+.login-card {
+  background: $color-white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba($color-black, 0.1);
+  text-align: center;
+
+  h3 {
+    margin-bottom: 1.5rem;
+    color: $color-dark-gray;
+    font-size: 1.8rem;
+  }
+}
+
+.google-sign-in-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid $color-light-gray;
+  border-radius: 4px;
+  background: $color-white;
+  color: $color-dark-gray;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  img {
+    margin-right: 10px;
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    background-color: darken($color-white, 5%);
+    box-shadow: 0 2px 4px rgba($color-black, 0.1);
+  }
+}
+
+// Import component styles
+@import "./_navbar.scss";
+@import "./_adminPage.scss";
+
+// Stats Section
+.stats-item {
+  padding: 1.5rem;
   border-radius: 0.5rem;
-  box-shadow: 0 2px 4px rgba(0,0,0,.1);
+  background: $color-white;
+  transition: transform 0.3s ease;
+  border: 1px solid rgba($color-black, 0.1);
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba($color-black, 0.1);
+  }
+
+  i {
+    color: $color-gold;
+  }
+
+  h4 {
+    color: $color-dark-gray;
+    font-size: 1rem;
+    margin: 1rem 0;
+  }
+
+  .h2 {
+    color: $primary-color;
+    margin: 0;
+    font-weight: bold;
+  }
 }
 
-// Button styling
+// Activity Feed
+.activity-feed {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 1rem;
+
+  .activity-item {
+    padding: 1rem;
+    border-bottom: 1px solid $color-light-gray;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .activity-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba($color-gold, 0.1);
+      color: $color-gold;
+    }
+
+    .activity-content {
+      flex: 1;
+
+      .activity-title {
+        font-weight: bold;
+        margin-bottom: 0.25rem;
+      }
+
+      .activity-time {
+        font-size: 0.875rem;
+        color: $color-dark-gray;
+      }
+    }
+  }
+}
+
+// Card Enhancements
+.card {
+  border: none;
+  box-shadow: 0 2px 4px rgba($color-black, 0.1);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba($color-black, 0.15);
+  }
+
+  .card-header {
+    border-bottom: 2px solid rgba($color-gold, 0.5);
+    padding: 1rem 1.5rem;
+
+    h3 {
+      font-weight: 600;
+    }
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+}
+
+// Button Styles
 .btn {
   border-radius: 0.25rem;
-  padding: 0.5rem 1.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 500;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+    box-shadow: 0 2px 4px rgba($color-black, 0.1);
+  }
+
+  i {
+    margin-right: 0.5rem;
   }
 }
 
-// Container spacing
-.container {
-  padding: 2rem 1rem;
-}
+// Responsive Adjustments
+@media (max-width: 768px) {
+  .admin-header {
+    padding: 1.5rem 1rem;
 
-// Admin/Staff action buttons
-.admin-actions, .staff-actions {
-  margin-top: 2rem;
+    h1 {
+      font-size: 2rem;
+    }
+  }
 
-  h2 {
+  .stats-item {
     margin-bottom: 1rem;
-    font-size: 1.5rem;
-    color: $primary-color;
   }
-}
 
-// Utility classes
-.gap-2 {
-  gap: 0.5rem;
+  .card {
+    margin-bottom: 1rem;
+  }
 }

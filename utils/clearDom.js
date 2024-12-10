@@ -1,8 +1,19 @@
 const clearDOM = () => {
-  document.querySelector('#orders-container').innerHTML = '';
-  document.querySelector('#login-form-container').innerHTML = '';
-  document.querySelector('#view').innerHTML = '';
-  document.querySelector('#add-button').innerHTML = '';
+  // Clear only content containers, preserve navigation
+  const containers = [
+    '#form-container',
+    '#orders-container',
+    '#admin-dashboard',
+    '#view',
+    '#add-button'
+  ];
+
+  containers.forEach((container) => {
+    const element = document.querySelector(container);
+    if (element) {
+      element.innerHTML = '';
+    }
+  });
 };
 
 export default clearDOM;
