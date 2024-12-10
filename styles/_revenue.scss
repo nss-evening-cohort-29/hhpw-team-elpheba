@@ -1,0 +1,42 @@
+#rev-main-container{
+  display: flex;
+  justify-content: center;
+}
+
+#rev-main-box{
+  width: 50%
+}
+
+.rev-page-headers{
+  font-size: xx-large;
+  display: flex;
+  justify-content: center;
+}
+
+.display{
+  display: flex;
+  justify-content: space-around;
+  margin-top: 30px;
+}
+
+.today-vals{
+  border: 1px,black, solid;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.overall-vals{
+  border: 1px,black, solid;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.overall-vals{
+  border: 1px,black, solid;
+
+}
