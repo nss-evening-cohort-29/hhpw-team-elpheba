@@ -4,6 +4,7 @@ import { showOrders, emptyOrders } from '../pages/ordersPage';
 import showAdminDashboard from '../pages/adminPage';
 import renderToDOM from '../utils/renderToDom';
 import revenuePage from '../pages/revenuePage';
+import createOrderPage from '../pages/createOrderPage';
 
 const navigationEvents = (user) => {
   // Clear main container and reset view
@@ -38,12 +39,7 @@ const navigationEvents = (user) => {
   // CREATE ORDER
   document.querySelector('#create-order').addEventListener('click', () => {
     clearMainContainer();
-    const domString = `
-      <div class="create-order-container">
-        <h1>Create New Order</h1>
-        <div id="create-order-form"></div>
-      </div>`;
-    renderToDOM('#form-container', domString);
+    createOrderPage();
   });
 
   // VIEW REVENUE

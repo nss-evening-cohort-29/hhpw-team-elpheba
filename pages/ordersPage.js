@@ -13,6 +13,18 @@ const showOrders = (array) => {
 
   let domString = '';
   array.forEach((item) => {
+    let itemType = '';
+    switch (item.order_type) {
+      case 'dine_in':
+        itemType = 'Dine in';
+        break;
+      case 'carryout':
+        itemType = 'Carryout';
+        break;
+      default:
+        itemType = 'Dine in';
+    }
+
     domString += `
       <div class="card">
         <div class="card-body">
@@ -21,7 +33,7 @@ const showOrders = (array) => {
             <li class="order-details-item">${item.status}</li>
             <li class="order-details-item">${item.customer_phone}</li>
             <li class="order-details-item">${item.customer_email}</li>
-            <li class="order-details-item">${item.order_type}</li>
+            <li class="order-details-item">${itemType}</li>
           </ul>
           <div class="order-card-btns-container">
             <a href="#" id="order-card-details--${item.firebaseKey}">View Details</a>
