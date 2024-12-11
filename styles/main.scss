@@ -78,11 +78,11 @@ body {
     box-shadow: 0 2px 4px rgba($color-black, 0.1);
   }
 }
-
 // Import component styles
 @import "./_navbar.scss";
 @import "./_adminPage.scss";
 @import "./revenue.scss";
+@import "./_loginPage.scss";
 
 // Stats Section
 .stats-item {

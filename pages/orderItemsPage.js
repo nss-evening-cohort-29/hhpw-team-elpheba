@@ -7,7 +7,7 @@ const emptyOrderItems = () => {
   const domString = `<h1>No Order Items</h1>
       <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
     <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
-  renderToDOM('#view', domString);
+  renderToDOM('#main-container', domString);
 };
 
 const showOrderItems = (array) => {
@@ -30,7 +30,7 @@ const showOrderItems = (array) => {
     </div>
     `;
   });
-  renderToDOM('#view', domString);
+  renderToDOM('#main-container', domString);
   const btnString = `
   <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
   <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
