@@ -1,17 +1,17 @@
-import clearDom from '../utils/clearDom';
 import renderToDOM from '../utils/renderToDom';
+import clearDOM from '../utils/clearDom';
 
 // later, emptyOrderItems and showOrderItems will get called in domEvents
 
-const emptyOrderItems = () => {
+const emptyOrderItems = (firebaseKey) => {
   const domString = `<h1>No Order Items</h1>
-      <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
-    <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
+      <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
+    <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
   renderToDOM('#view', domString);
 };
 
-const showOrderItems = (array) => {
-  clearDom();
+const showOrderItems = (array, firebaseKey) => {
+  clearDOM();
 
   const total = '<h1>TOTAL: *PLACEHOLDER*</h1>'; // TODO: insert logic for calculating the total
 
@@ -32,8 +32,8 @@ const showOrderItems = (array) => {
   });
   renderToDOM('#view', domString);
   const btnString = `
-  <button class="btn btn-success btn-lg mb-4" id="add-item-btn">Add Item</button>
-  <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn">Go To Payment</button>`;
+  <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
+  <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
   renderToDOM('#add-button', btnString);
 };
 
