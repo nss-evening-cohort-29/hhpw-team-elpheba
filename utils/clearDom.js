@@ -4,7 +4,6 @@ const clearDOM = () => {
     '#form-container',
     '#orders-container',
     '#admin-dashboard',
-    '#view',
     '#add-button'
   ];
 

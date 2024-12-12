@@ -13,13 +13,18 @@ const navigationEvents = (user) => {
       <div id="form-container"></div>
       <div id="orders-container"></div>
       <div id="admin-dashboard"></div>
-      <div id="view"></div>
       <div id="add-button"></div>
     `;
   };
 
   // HOME/ADMIN DASHBOARD
   document.querySelector('#logo-admin-panel').addEventListener('click', () => {
+    clearMainContainer();
+    showAdminDashboard(user);
+  });
+
+  // HOME/ADMIN DASHBOARD
+  document.querySelector('#admin-home').addEventListener('click', () => {
     clearMainContainer();
     showAdminDashboard(user);
   });
@@ -50,7 +55,7 @@ const navigationEvents = (user) => {
         <h1>Revenue Overview</h1>
         <div id="revenue-details"></div>
       </div>`;
-    renderToDOM('#view', domString);
+    renderToDOM('#main-container', domString);
     revenuePage();
   });
 };
