@@ -52,12 +52,9 @@ const navBar = (user) => {
   // Add active state handling
   const setActiveLink = (clickedId) => {
     const navLinks = document.querySelectorAll('.nav-link');
-    const dropdownItems = document.querySelectorAll('.dropdown-item');
 
     // Remove active class from all links
     navLinks.forEach((link) => link.classList.remove('active'));
-    dropdownItems.forEach((item) => item.classList.remove('active'));
-
     // Add active class to clicked link
     const clickedLink = document.querySelector(`#${clickedId}`);
     if (clickedLink) {
@@ -77,7 +74,7 @@ const navBar = (user) => {
   setActiveLink(currentPage);
 
   // Add click event listeners
-  const navLinks = document.querySelectorAll('.nav-link, .dropdown-item');
+  const navLinks = document.querySelectorAll('.nav-link');
   navLinks.forEach((link) => {
     link.addEventListener('click', (e) => {
       const clickedId = e.currentTarget.id;
