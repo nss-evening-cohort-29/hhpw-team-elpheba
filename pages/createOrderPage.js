@@ -15,7 +15,7 @@ const createOrderPage = (obj = {}) => {
         <input type="tel" class="form-control" id="customer-phone" aria-describedby="customer-phone" placeholder="555-555-5555" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" value="${obj.customer_phone || ''}" required>
       </div>
       <div class="form-group">
-        <label for="customer-email"></label>
+        <label for="customer-email">Email address:</label>
         <input type="email" class="form-control" id="customer-email" placeholder="example@email.com" value="${obj.customer_email || ''}" required>
       </div>
       <div class="form-group" id="order-type-select">

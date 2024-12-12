@@ -9,7 +9,7 @@ import domBuilder from './shared/domBuilder';
 const startApp = (user) => {
   domBuilder(); // Set up the main container structure
   navBar(user); // Set up navigation
-  domEvents();
+  domEvents(user);
   logoutButton(); // Add logout button to navbar
   navigationEvents(user); // Set up navigation events
   formEvents(user); // Set up form events

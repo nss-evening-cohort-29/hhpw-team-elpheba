@@ -1,10 +1,12 @@
 import { getOrderItems } from '../api/orderItems';
+import { getOrders, deleteSingleOrder } from '../api/orders';
 // eslint-disable-next-line import/extensions
 import { emptyOrderItems, showOrderItems } from '../pages/orderItemsPage';
+import { showOrders } from '../pages/ordersPage';
 import clearDOM from '../utils/clearDom';
 import addOrderItemForm from '../pages/createOrderItemPage';
 
-const domEvents = () => {
+const domEvents = (user) => {
   document.querySelector('#main-container').addEventListener('click', (e) => {
     // CLICK EVENT ON DETAILS BUTTON OF AN ORDER
     if (e.target.id.includes('order-card-details')) {
@@ -24,6 +26,14 @@ const domEvents = () => {
       addOrderItemForm(firebaseKey);
     }
 
+    // CLICK EVENT ON DELETE BUTTON OF AN ORDER
+    if (e.target.id.includes('order-card-delete')) {
+      const [, firebaseKey] = e.target.id.split('--');
+
+      deleteSingleOrder(firebaseKey).then(() => {
+        getOrders(user.uid).then(showOrders);
+      });
+    }
     // Below closes out the higher-order addEventListener and domEvents
   });
 };
