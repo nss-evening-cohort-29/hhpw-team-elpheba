@@ -3,46 +3,73 @@ import clearDom from '../utils/clearDom';
 
 // call this function to render output if there are no orders to display
 const emptyOrders = () => {
-  const domString = '<h1>No orders</h1>';
+  const domString = `
+    <div class="no-orders">
+      <h1>No Orders Found</h1>
+    </div>`;
   renderToDOM('#orders-container', domString);
 };
 
-// call getOrders then showOrders to render orders to DOM
-const showOrders = (array) => {
-  clearDom(); // clear the DOM before rendering
+const createOrderCard = (item) => {
+  const orderType = item.order_type === 'dine_in' ? 'in-person' : 'phone';
 
-  let domString = '';
-  array.forEach((item) => {
-    let itemType = '';
-    switch (item.order_type) {
-      case 'dine_in':
-        itemType = 'Dine in';
-        break;
-      case 'carryout':
-        itemType = 'Carryout';
-        break;
-      default:
-        itemType = 'Dine in';
-    }
-
-    domString += `
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">${item.order_name}</h5>
-          <ul class="order-details-list">
-            <li class="order-details-item">${item.status}</li>
-            <li class="order-details-item">${item.customer_phone}</li>
-            <li class="order-details-item">${item.customer_email}</li>
-            <li class="order-details-item">${itemType}</li>
-          </ul>
-          <div class="order-card-btns-container">
-            <a href="#" id="order-card-details--${item.firebaseKey}">View Details</a>
-            <a href="#" id="order-card-delete--${item.firebaseKey}">Delete</a>
-          </div>
+  return `
+    <div class="order-card">
+      <h5 class="card-title">${item.order_name}</h5>
+      <div class="order-info">
+        <div class="order-status ${item.status.toLowerCase()}">
+          Order Status (${item.status.toLowerCase()})
         </div>
-      </div>`;
+        <div class="contact-info">
+          <div class="phone">${item.customer_phone}</div>
+          <div class="email">${item.customer_email}</div>
+        </div>
+        <div class="order-type">Order Type (${orderType})</div>
+      </div>
+      <div class="order-card-btns-container">
+        <a href="#" id="order-card-details--${item.firebaseKey}" class="view-details">Details</a>
+        <a href="#" id="order-card-edit--${item.firebaseKey}" class="edit">Edit</a>
+        <a href="#" id="order-card-delete--${item.firebaseKey}" class="delete">Delete</a>
+      </div>
+    </div>`;
+};
+
+// Updates the visibility of order cards based on search term
+const updateOrderVisibility = (searchTerm) => {
+  const orderCards = document.querySelectorAll('.order-card');
+  const searchLower = searchTerm.toLowerCase();
+
+  orderCards.forEach((card) => {
+    const cardContent = card.textContent.toLowerCase();
+    const cardClone = card.cloneNode(true);
+    cardClone.style.display = cardContent.includes(searchLower) ? 'block' : 'none';
+    card.parentNode.replaceChild(cardClone, card);
   });
+};
+
+// Sets up the search functionality for orders
+const setupSearch = (searchInput) => {
+  if (!searchInput) return;
+
+  searchInput.addEventListener('input', (e) => {
+    updateOrderVisibility(e.target.value);
+  });
+};
+
+// Renders the orders view with search and order cards
+const showOrders = (array) => {
+  clearDom();
+
+  const domString = `
+    <div class="search-orders">
+      <input type="text" placeholder="Search Orders" id="search-orders-input">
+    </div>
+    <div class="orders-grid">
+      ${array.map(createOrderCard).join('')}
+    </div>`;
+
   renderToDOM('#orders-container', domString);
+  setupSearch(document.querySelector('#search-orders-input'));
 };
 
 export {

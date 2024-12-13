@@ -7,9 +7,8 @@ import clearDOM from '../utils/clearDom';
 import addOrderItemForm from '../pages/createOrderItemPage';
 // import clearDom2 from '../utils/clearDom2';
 
-const domEvents = () => {
+const domEvents = (user) => {
   document.addEventListener('click', (e) => {
-    
     // CLICK EVENT ON DETAILS BUTTON OF AN ORDER
     if (e.target.id.includes('order-card-details')) {
       clearDOM();
