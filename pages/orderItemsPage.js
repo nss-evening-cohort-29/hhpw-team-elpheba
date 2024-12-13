@@ -1,5 +1,6 @@
 import renderToDOM from '../utils/renderToDom';
 import clearDOM from '../utils/clearDom';
+import { getValues } from '../utils/helperFunctions';
 
 // later, emptyOrderItems and showOrderItems will get called in domEvents
 
@@ -13,7 +14,7 @@ const emptyOrderItems = (firebaseKey) => {
 const showOrderItems = (array, firebaseKey) => {
   clearDOM();
 
-  const total = '<h1>TOTAL: *PLACEHOLDER*</h1>'; // TODO: insert logic for calculating the total
+  const total = `<h1>TOTAL:${getValues(array)}</h1>`;
 
   renderToDOM('#form-container', total);
 

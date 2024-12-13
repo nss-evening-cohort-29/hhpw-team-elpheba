@@ -1,8 +1,9 @@
 import renderToDom from '../utils/renderToDom';
-// import clearDOM from '../utils/clearDom';
+import clearDOM from '../utils/clearDom';
+import { revenue } from '../utils/helperFunctions';
 
 const revenuePage = () => {
-  // clearDOM();
+  clearDOM();
   let domString = '';
 
   domString += `
@@ -16,7 +17,7 @@ const revenuePage = () => {
           <div>$todayPayFunction</div>
         </div>
         <div class="overall-vals">Total Revenue From Start!
-          <div>$totalPayFunction</div>
+          <div>${revenue()}</div>
         </div>
       </div>
       <div id="tips-display" class="display">
