@@ -5,9 +5,11 @@ import { emptyOrderItems, showOrderItems } from '../pages/orderItemsPage';
 import { showOrders } from '../pages/ordersPage';
 import clearDOM from '../utils/clearDom';
 import addOrderItemForm from '../pages/createOrderItemPage';
+// import clearDom2 from '../utils/clearDom2';
 
-const domEvents = (user) => {
-  document.querySelector('#main-container').addEventListener('click', (e) => {
+const domEvents = () => {
+  document.addEventListener('click', (e) => {
+    
     // CLICK EVENT ON DETAILS BUTTON OF AN ORDER
     if (e.target.id.includes('order-card-details')) {
       clearDOM();
@@ -22,6 +24,8 @@ const domEvents = (user) => {
     }
     // CLICK EVENT ON "ADD ITEM" BUTTON ON AN ORDER'S ORDER ITEMS PAGE
     if (e.target.id.includes('add-item-btn')) {
+      // clearDom2();
+      clearDOM();
       const [, firebaseKey] = e.target.id.split('--'); // destructuring to assign firebasekey of the order, which was passed into showOrderItems to store in the add item button
       addOrderItemForm(firebaseKey);
     }
