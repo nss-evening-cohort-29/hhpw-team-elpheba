@@ -1,0 +1,213 @@
+// Theme Variables
+$background-dark: #fff;
+$color-white: #fff;
+$color-text-primary: #000;
+$color-text-secondary: #666;
+
+// Status Colors
+$status-open-bg: #e3f2fd;
+$status-open-text: #1976d2;
+$status-closed-bg: #e8f5e9;
+$status-closed-text: #2e7d32;
+$status-pending-bg: #fff3e0;
+$status-pending-text: #f57c00;
+
+// Action Colors
+$action-details: #0066cc;
+$action-edit: #6200ee;
+$action-delete: #dc3545;
+
+// Layout Variables
+$card-border-radius: 4px;
+$card-shadow: 0 1px 3px rgba(0,0,0,0.1);
+$hover-shadow: 0 2px 5px rgba(0,0,0,0.15);
+$border-color: rgba(0,0,0,0.1);
+$transition-speed: 0.2s;
+$grid-gap: 1rem;
+$card-padding: 1.25rem;
+
+// Breakpoints
+$breakpoint-lg: 992px;
+$breakpoint-md: 768px;
+
+/**
+ * Orders Container
+ * Main grid layout for the orders view
+ */
+#orders-container {
+  padding: 0 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: $grid-gap;
+
+  .orders-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: $grid-gap;
+    width: 100%;
+  }
+}
+
+/**
+ * Order Card
+ * Individual order card styling
+ */
+.order-card {
+  background: $color-white;
+  border-radius: $card-border-radius;
+  border: 1px solid $border-color;
+  padding: $card-padding;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: $color-text-primary;
+    margin-bottom: 0.5rem;
+  }
+
+  .order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+/**
+ * Order Status
+ * Status indicator styling with different states
+ */
+.order-status {
+  font-size: 0.9rem;
+  padding: 0.25rem 0.5rem;
+  border-radius: $card-border-radius;
+  display: inline-block;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+
+  &.open {
+    background-color: $status-open-bg;
+    color: $status-open-text;
+  }
+
+  &.closed {
+    background-color: $status-closed-bg;
+    color: $status-closed-text;
+  }
+
+  &.pending {
+    background-color: $status-pending-bg;
+    color: $status-pending-text;
+  }
+}
+
+/**
+ * Contact Info & Order Type
+ */
+.contact-info, .order-type {
+  font-size: 0.9rem;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+/**
+ * Action Buttons
+ * Styling for action links (Details, Edit, Delete)
+ */
+.order-card-btns-container {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid $border-color;
+
+  a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: $color-text-secondary;
+
+    &.view-details {
+      color: $action-details;
+    }
+
+    &.edit {
+      color: $action-edit;
+    }
+
+    &.delete {
+      margin-left: auto;
+      text-decoration: none;
+      color: #dc3545;
+
+      &:hover {
+        color: darken(#dc3545, 10%);
+      }
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+/**
+ * Empty State
+ */
+.no-orders {
+  text-align: center;
+  padding: 2rem;
+  color: $color-text-secondary;
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/**
+ * Search Bar
+ * Order search input styling
+ */
+.search-orders {
+  width: 100%;
+  padding: 1rem;
+  margin-bottom: 1rem;
+
+  input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid $border-color;
+    border-radius: $card-border-radius;
+    font-size: 1rem;
+    background: $color-white;
+
+    &:focus {
+      outline: none;
+      border-color: $action-details;
+      box-shadow: 0 0 0 2px rgba($action-details, 0.1);
+    }
+
+    &::placeholder {
+      color: $color-text-secondary;
+    }
+  }
+}
+
+// Responsive Design
+@media (max-width: $breakpoint-lg) {
+  #orders-container .orders-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: $breakpoint-md) {
+  #orders-container {
+    padding: 0.5rem;
+
+    .orders-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+}
