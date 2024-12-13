@@ -7,7 +7,7 @@ const emptyOrderItems = (firebaseKey) => {
   const domString = `<h1>No Order Items</h1>
       <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
     <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
-  renderToDOM('#main-container', domString);
+  renderToDOM('#orders-container', domString);
 };
 
 const showOrderItems = (array, firebaseKey) => {
@@ -15,7 +15,7 @@ const showOrderItems = (array, firebaseKey) => {
 
   const total = '<h1>TOTAL: *PLACEHOLDER*</h1>'; // TODO: insert logic for calculating the total
 
-  renderToDOM('#orders-container', total);
+  renderToDOM('#form-container', total);
 
   let domString = '';
   array.forEach((item) => {
@@ -30,7 +30,7 @@ const showOrderItems = (array, firebaseKey) => {
     </div>
     `;
   });
-  renderToDOM('#main-container', domString);
+  renderToDOM('#orders-container', domString);
   const btnString = `
   <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
   <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
