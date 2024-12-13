@@ -65,6 +65,27 @@ const formEvents = (user) => {
       createOrderItem(payload);
       getOrderItems(orderFirebaseKey).then((items) => showOrderItems(items, orderFirebaseKey));
     }
+    // CLICK EVENT FOR CLOSING AN ORDER
+    if (e.target.id.includes('close-order')) {
+      const [, firebaseKey] = e.target.id.split('--');
+
+      // Get tip amount
+      const selectedTipBtn = document.querySelector('.tip-btn.active');
+      const customTipInput = document.querySelector('#custom-tip');
+      const tipPercentage = selectedTipBtn ? selectedTipBtn.dataset.tip : (customTipInput.value || 0);
+
+      const payload = {
+        firebaseKey,
+        payment_type: document.querySelector('#payment-type').value,
+        tip_percentage: parseFloat(tipPercentage),
+        status: 'closed',
+        closed_date: Date.now()
+      };
+
+      updateOrder(payload).then(() => {
+        getOrders(user.uid).then(showOrders);
+      });
+    }
     // below closes the higher order functions
   });
 };

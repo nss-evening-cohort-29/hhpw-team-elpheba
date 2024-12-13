@@ -211,3 +211,51 @@ $breakpoint-md: 768px;
     }
   }
 }
+
+.close-order-form {
+  max-width: 500px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: $background-dark;
+  border-radius: $card-border-radius;
+  box-shadow: $card-shadow;
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .tip-options {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+
+    .tip-btn {
+      padding: 0.5rem 1rem;
+      min-width: 80px;
+
+      &.active {
+        background-color: $action-details;
+        border-color: $action-details;
+        color: $color-white;
+      }
+    }
+
+    .custom-tip {
+      flex: 1;
+      max-width: 150px;
+    }
+  }
+
+  .button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+
+    button {
+      min-width: 120px;
+    }
+  }
+}
