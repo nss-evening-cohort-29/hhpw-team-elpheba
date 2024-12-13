@@ -2,7 +2,6 @@
 import { getOrders } from '../api/orders';
 import { showOrders, emptyOrders } from '../pages/ordersPage';
 import showAdminDashboard from '../pages/adminPage';
-import renderToDOM from '../utils/renderToDom';
 import revenuePage from '../pages/revenuePage';
 import createOrderPage from '../pages/createOrderPage';
 
@@ -13,6 +12,7 @@ const navigationEvents = (user) => {
       <div id="form-container"></div>
       <div id="orders-container"></div>
       <div id="admin-dashboard"></div>
+      <div id="revenue-page"></div>
       <div id="add-button"></div>
     `;
   };
@@ -50,12 +50,6 @@ const navigationEvents = (user) => {
   // VIEW REVENUE
   document.querySelector('#view-revenue').addEventListener('click', () => {
     clearMainContainer();
-    const domString = `
-      <div class="revenue-container">
-        <h1>Revenue Overview</h1>
-        <div id="revenue-details"></div>
-      </div>`;
-    renderToDOM('#main-container', domString);
     revenuePage();
   });
 };
