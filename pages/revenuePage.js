@@ -67,7 +67,7 @@ const revenuePage = () => {
       </div>
     </div>`;
 
-  renderToDom('#revenue-details', domString);
+  renderToDom('#revenue-page', domString);
 };
 
 export default revenuePage;
