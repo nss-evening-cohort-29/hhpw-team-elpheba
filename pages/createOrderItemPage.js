@@ -1,11 +1,15 @@
 import clearDOM from '../utils/clearDom';
 import renderToDOM from '../utils/renderToDom';
 
-const addOrderItemForm = (firebaseKey, obj = {}) => {
+const addOrderItemForm = (orderFirebaseKey, obj = {}) => {
   clearDOM();
 
-  // Format the price for display if it exists, with null safety
   const displayPrice = obj && obj.item_price ? parseFloat(obj.item_price).toFixed(2) : '';
+
+  // Ensure proper ID formatting for the form
+  const formId = obj && obj.firebaseKey
+    ? `update-orderItem--${obj.firebaseKey}--${orderFirebaseKey}`
+    : `submit-the-orderItem--${orderFirebaseKey}`;
 
   const domString = `
     <div class="container mt-4">
@@ -14,10 +18,17 @@ const addOrderItemForm = (firebaseKey, obj = {}) => {
           <div class="card">
             <div class="card-body">
               <h2 class="card-title text-center mb-4">${obj && obj.firebaseKey ? 'Edit Order Item' : 'Add New Order Item'}</h2>
-              <form id="${obj && obj.firebaseKey ? `update-orderItem--${obj.firebaseKey}--${firebaseKey}` : `submit-the-orderItem--${firebaseKey}`}" class="order-form">
+              <form id="${formId}" class="order-form">
                 <div class="form-group mb-3">
                   <label for="item_name" class="form-label">Item Name</label>
-                  <input type="text" class="form-control" id="item_name" placeholder="Enter item name" value="${(obj && obj.item_name) || ''}" required>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="item_name"
+                    placeholder="Enter item name"
+                    value="${(obj && obj.item_name) || ''}"
+                    required
+                  >
                 </div>
                 <div class="form-group mb-3">
                   <label for="item_price" class="form-label">Item Price</label>
@@ -32,7 +43,7 @@ const addOrderItemForm = (firebaseKey, obj = {}) => {
                       placeholder="0.00"
                       value="${displayPrice}"
                       required
-                      onchange="this.value = parseFloat(this.value).toFixed(2)"
+                      onchange="if (this.value) { this.value = parseFloat(this.value).toFixed(2) }"
                     >
                   </div>
                 </div>

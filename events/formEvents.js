@@ -8,22 +8,32 @@ import {
 import { showOrderItems } from '../pages/orderItemsPage';
 
 const formatPrice = (price) => {
-  const numPrice = parseFloat(price);
-  return numPrice.toFixed(2); // Don't include $ here as it's stored in database without currency symbol
+  const numPrice = parseFloat(price) || 0;
+  return numPrice.toFixed(2);
 };
 
 const formEvents = (user) => {
   document.querySelector('#main-container').addEventListener('submit', (e) => {
     e.preventDefault();
 
-    // CLICK EVENT FOR SUBMITTING AN ORDER
+    // CLICK EVENT FOR SUBMITTING A NEW ORDER
     if (e.target.id.includes('submit-order')) {
+      const emailInput = document.querySelector('#customer-email');
+      const phoneInput = document.querySelector('#customer-phone');
+      const nameInput = document.querySelector('#order-name');
+      const typeInput = document.querySelector('#order-type');
+
+      if (!emailInput || !phoneInput || !nameInput || !typeInput) {
+        console.error('Required order inputs are missing. Check the form rendering.');
+        return;
+      }
+
       const payload = {
         created_date: Date.now(),
-        customer_email: document.querySelector('#customer-email').value,
-        customer_phone: document.querySelector('#customer-phone').value,
-        order_name: document.querySelector('#order-name').value,
-        order_type: document.querySelector('#order-type').value,
+        customer_email: emailInput.value,
+        customer_phone: phoneInput.value,
+        order_name: nameInput.value,
+        order_type: typeInput.value,
         status: 'open',
         total_amount: '0.00',
         user_id: user.uid
@@ -37,31 +47,22 @@ const formEvents = (user) => {
       });
     }
 
-    // CLICK EVENT FOR EDITING AN ORDER
-    if (e.target.id.includes('update-order')) {
-      const [, firebaseKey] = e.target.id.split('--');
-      const payload = {
-        // left out date, status, total amount, and uid as this function is only for editing text on the card by the user
-        customer_email: document.querySelector('#customer-email').value,
-        customer_phone: document.querySelector('#customer-phone').value,
-        order_name: document.querySelector('#order-name').value,
-        order_type: document.querySelector('#order-type').value,
-        firebaseKey
-      };
-
-      updateOrder(payload).then(() => {
-        getOrders(user.uid).then(showOrders);
-      });
-    }
-
-    // CLICK EVENT FOR SUBMITTING AN ORDER ITEM
+    // CLICK EVENT FOR SUBMITTING A NEW ORDER ITEM
     if (e.target.id.includes('submit-the-orderItem')) {
       const [, orderFirebaseKey] = e.target.id.split('--');
-      const itemPrice = parseFloat(document.querySelector('#item_price').value || 0);
+      const itemNameInput = document.querySelector('#item_name');
+      const itemPriceInput = document.querySelector('#item_price');
+
+      if (!itemNameInput || !itemPriceInput) {
+        console.error('Item name or price input not found when submitting a new item.');
+        return;
+      }
+
+      const itemPrice = parseFloat(itemPriceInput.value || 0);
 
       const payload = {
         created_at: Date.now(),
-        item_name: document.querySelector('#item_name').value,
+        item_name: itemNameInput.value.trim(),
         item_price: formatPrice(itemPrice),
         menu_item_id: 'placeholder',
         order_id: orderFirebaseKey,
@@ -76,21 +77,36 @@ const formEvents = (user) => {
       });
     }
 
-    // CLICK EVENT FOR UPDATING AN ORDER ITEM
+    // CLICK EVENT FOR UPDATING AN EXISTING ORDER ITEM
     if (e.target.id.includes('update-orderItem')) {
-      const [, firebaseKey, orderId] = e.target.id.split('--');
-      const itemPrice = parseFloat(document.querySelector('#item_price').value || 0);
+      const [, itemFirebaseKey, orderFirebaseKey] = e.target.id.split('--');
+
+      // Validate that we have both required keys
+      if (!itemFirebaseKey || !orderFirebaseKey) {
+        console.error('Missing required IDs for order item update');
+        return;
+      }
+
+      const itemNameInput = document.querySelector('#item_name');
+      const itemPriceInput = document.querySelector('#item_price');
+
+      if (!itemNameInput || !itemPriceInput) {
+        console.error('Item name or price input not found when updating the item.');
+        return;
+      }
+
+      const itemPrice = parseFloat(itemPriceInput.value || 0);
 
       const payload = {
-        item_name: document.querySelector('#item_name').value,
+        item_name: itemNameInput.value.trim(),
         item_price: formatPrice(itemPrice),
-        firebaseKey,
-        order_id: orderId
+        firebaseKey: itemFirebaseKey,
+        order_id: orderFirebaseKey
       };
 
       updateOrderItem(payload).then(() => {
-        getOrderItems(payload.order_id).then((items) => {
-          showOrderItems(items, payload.order_id);
+        getOrderItems(orderFirebaseKey).then((items) => {
+          showOrderItems(items, orderFirebaseKey);
         });
       });
     }
@@ -99,15 +115,26 @@ const formEvents = (user) => {
     if (e.target.id.includes('close-order')) {
       const [, firebaseKey] = e.target.id.split('--');
 
-      // Get tip amount
+      const paymentTypeInput = document.querySelector('#payment-type');
+      if (!paymentTypeInput) {
+        console.error('Payment type input not found when closing the order.');
+        return;
+      }
+
       const selectedTipBtn = document.querySelector('.tip-btn.active');
       const customTipInput = document.querySelector('#custom-tip');
-      const tipPercentage = selectedTipBtn ? selectedTipBtn.dataset.tip : (customTipInput.value || 0);
+      let tipPercentage = 0;
+
+      if (selectedTipBtn) {
+        tipPercentage = selectedTipBtn.dataset.tip;
+      } else if (customTipInput && customTipInput.value) {
+        tipPercentage = customTipInput.value;
+      }
 
       const payload = {
         firebaseKey,
-        payment_type: document.querySelector('#payment-type').value,
-        tip_percentage: parseFloat(tipPercentage).toFixed(2),
+        payment_type: paymentTypeInput.value,
+        tip_percentage: parseFloat(tipPercentage || 0).toFixed(2),
         status: 'closed',
         closed_date: Date.now()
       };
