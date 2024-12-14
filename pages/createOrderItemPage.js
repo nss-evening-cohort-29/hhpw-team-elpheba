@@ -1,26 +1,55 @@
 import clearDOM from '../utils/clearDom';
 import renderToDOM from '../utils/renderToDom';
 
-// USING THIS FORM FOR BOTH CREATE AND UPDATE ORDER ITEMS
 const addOrderItemForm = (firebaseKey, obj = {}) => {
-  console.warn('Firebase Key:', firebaseKey);
-  console.warn('Order Item Object:', obj);
   clearDOM();
-  // id of the form ternary: The first condition, if the order item already has a firebase key (if it already exists), is for updating. The second condition, if not obj does not yet have a firebase key, is for creating, and it inserts the associated order's firebasekey in the id for use in addOrderItemForm
-  // "submit-the-orderItem" may seem like a weird name. but having it as "submit-orderItem" conflicted with other functions in formEvents that targeted id's also containing "submit-order," so please leave as is!
-  // type="number" step="0.01" of the price input: type restricts the input to numerical values, and step allows decimal values with up to two decimal places
+
+  // Format the price for display if it exists, with null safety
+  const displayPrice = obj && obj.item_price ? parseFloat(obj.item_price).toFixed(2) : '';
+
   const domString = `
-    <form id="${obj.firebaseKey ? `update-the-orderItem--${obj.firebaseKey}` : `submit-the-orderItem--${firebaseKey}`}" class="mb-4">
-      <div class="form-group">
-        <label for="image"Item Name</label>
-        <input type="text" class="form-control" id="item_name" placeholder="Item Name" value="${obj.item_name || ''}" required>
+    <div class="container mt-4">
+      <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h2 class="card-title text-center mb-4">${obj && obj.firebaseKey ? 'Edit Order Item' : 'Add New Order Item'}</h2>
+              <form id="${obj && obj.firebaseKey ? `update-orderItem--${obj.firebaseKey}--${firebaseKey}` : `submit-the-orderItem--${firebaseKey}`}" class="order-form">
+                <div class="form-group mb-3">
+                  <label for="item_name" class="form-label">Item Name</label>
+                  <input type="text" class="form-control" id="item_name" placeholder="Enter item name" value="${(obj && obj.item_name) || ''}" required>
+                </div>
+                <div class="form-group mb-3">
+                  <label for="item_price" class="form-label">Item Price</label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      min="0"
+                      class="form-control"
+                      id="item_price"
+                      placeholder="0.00"
+                      value="${displayPrice}"
+                      required
+                      onchange="this.value = parseFloat(this.value).toFixed(2)"
+                    >
+                  </div>
+                </div>
+                <div class="d-grid gap-2 mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg">
+                    ${obj && obj.firebaseKey ? 'Update' : 'Add'} Item
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-lg" id="back-to-orders-btn">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="form-group">
-        <label for="image">Item Price</label>
-        <input type="number" step="0.01" class="form-control" id="item_price" placeholder="Item Price" value="${obj.item_price || ''}" required>
-      </div>
-      <button type="submit" class="btn btn-primary mt-3" id="submit-item-form-btn">Add/Edit Item</button>
-    </form>`;
+    </div>`;
 
   renderToDOM('#form-container', domString);
 };

@@ -13,18 +13,31 @@ const domEvents = (user) => {
     if (e.target.id.includes('order-card-details')) {
       clearDOM();
       const [, firebaseKey] = e.target.id.split('--');
+
+      // Get order items first
       getOrderItems(firebaseKey).then((items) => {
         if (items.length === 0) {
+          // If no items, just show empty state
           emptyOrderItems(firebaseKey);
         } else {
-          showOrderItems(items, firebaseKey);
+          // Try to get order status, default to 'open' if not found
+          getSingleOrder(firebaseKey)
+            .then((orderObj) => {
+              const status = orderObj ? orderObj.status : 'open';
+              showOrderItems(items, firebaseKey, status);
+            })
+            .catch(() => {
+              // If order fetch fails, default to 'open'
+              showOrderItems(items, firebaseKey, 'open');
+            });
         }
       });
     }
+
     // CLICK EVENT ON "ADD ITEM" BUTTON ON AN ORDER'S ORDER ITEMS PAGE
     if (e.target.id.includes('add-item-btn')) {
       clearDOM();
-      const [, firebaseKey] = e.target.id.split('--'); // destructuring to assign firebasekey of the order, which was passed into showOrderItems to store in the add item button
+      const [, firebaseKey] = e.target.id.split('--');
       addOrderItemForm(firebaseKey);
     }
 
@@ -40,7 +53,6 @@ const domEvents = (user) => {
     // CLICK EVENT ON DELETE BUTTON OF AN ORDER
     if (e.target.id.includes('order-card-delete')) {
       const [, firebaseKey] = e.target.id.split('--');
-
       deleteSingleOrder(firebaseKey).then(() => {
         getOrders(user.uid).then(showOrders);
       });
@@ -64,11 +76,27 @@ const domEvents = (user) => {
       });
     }
 
+    // CLICK EVENT FOR "GO BACK TO ORDERS" BUTTON
+    if (e.target.id === 'back-to-orders-btn') {
+      getOrders(user.uid).then(showOrders);
+    }
+
     // CLICK EVENT FOR "CANCEL PAYMENT" BUTTON
     if (e.target.id.includes('cancel-payment')) {
       const [, firebaseKey] = e.target.id.split('--');
+
+      // Get order items first
       getOrderItems(firebaseKey).then((items) => {
-        showOrderItems(items, firebaseKey);
+        // Try to get order status, default to 'open' if not found
+        getSingleOrder(firebaseKey)
+          .then((orderObj) => {
+            const status = orderObj ? orderObj.status : 'open';
+            showOrderItems(items, firebaseKey, status);
+          })
+          .catch(() => {
+            // If order fetch fails, default to 'open'
+            showOrderItems(items, firebaseKey, 'open');
+          });
       });
     }
 
