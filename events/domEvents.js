@@ -1,4 +1,4 @@
-import { getOrderItems } from '../api/orderItems';
+import { getOrderItems, getSingleOrderItem } from '../api/orderItems';
 import { getOrders, deleteSingleOrder, getSingleOrder } from '../api/orders';
 import { emptyOrderItems, showOrderItems } from '../pages/orderItemsPage';
 import { showOrders } from '../pages/ordersPage';
@@ -26,6 +26,15 @@ const domEvents = (user) => {
       clearDOM();
       const [, firebaseKey] = e.target.id.split('--'); // destructuring to assign firebasekey of the order, which was passed into showOrderItems to store in the add item button
       addOrderItemForm(firebaseKey);
+    }
+
+    // CLICK EVENT ON "EDIT" BUTTON ON AN ORDER ITEM
+    // get the firebase key of the order item
+    if (e.target.id.includes('edit-orderItem-btn')) {
+      const [, orderItemFirebaseKey, orderFirebaseKey] = e.target.id.split('--');
+      getSingleOrderItem(orderItemFirebaseKey).then((orderItemObj) => {
+        addOrderItemForm(orderFirebaseKey, orderItemObj);
+      });
     }
 
     // CLICK EVENT ON DELETE BUTTON OF AN ORDER

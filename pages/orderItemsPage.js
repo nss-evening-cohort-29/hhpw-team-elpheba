@@ -25,7 +25,7 @@ const showOrderItems = (array, firebaseKey) => {
       <div class="card-body">
         <h5 class="card-title">${item.item_name}</h5>
         <h6 class="card-subtitle mb-2 text-muted">PRICE: ${item.item_price}</h6>
-        <i class="fas fa-edit btn btn-info" id="update-orderItem-btn--${item.firebaseKey}"></i>
+        <i class="fas fa-edit btn btn-info" id="edit-orderItem-btn--${item.firebaseKey}"></i>
         <i class="btn btn-danger fas fa-trash-alt" id="delete-orderItem-btn--${item.firebaseKey}"></i>
       </div>
     </div>
