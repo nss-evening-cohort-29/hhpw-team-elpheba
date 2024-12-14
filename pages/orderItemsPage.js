@@ -2,40 +2,105 @@ import renderToDOM from '../utils/renderToDom';
 import clearDOM from '../utils/clearDom';
 import { getValues } from '../utils/helperFunctions';
 
-// later, emptyOrderItems and showOrderItems will get called in domEvents
+const formatPrice = (price) => {
+  const numPrice = parseFloat(price);
+  return `$${numPrice.toFixed(2)}`;
+};
 
 const emptyOrderItems = (firebaseKey) => {
-  const domString = `<h1>No Order Items</h1>
-      <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
-    <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
+  clearDOM();
+  const domString = `
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h1 class="mb-4">No Order Items</h1>
+          <div class="d-flex justify-content-center gap-2">
+            <button class="btn btn-success btn-lg" id="add-item-btn--${firebaseKey}">Add Item</button>
+            <button class="btn btn-primary btn-lg" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>
+            <button class="btn btn-secondary btn-lg" id="back-to-orders-btn">Go Back to Orders</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
   renderToDOM('#orders-container', domString);
 };
 
-const showOrderItems = (array, firebaseKey) => {
+const renderOrderButtons = (firebaseKey, orderStatus = 'open') => {
+  const buttonString = orderStatus === 'closed'
+    ? `<div class="container">
+         <div class="row">
+           <div class="col-12 text-center">
+             <button class="btn btn-secondary btn-lg" id="back-to-orders-btn">Go Back to Orders</button>
+           </div>
+         </div>
+       </div>`
+    : `<div class="container">
+         <div class="row">
+           <div class="col-12 text-center">
+             <div class="d-flex justify-content-center gap-2">
+               <button class="btn btn-success btn-lg" id="add-item-btn--${firebaseKey}">Add Item</button>
+               <button class="btn btn-primary btn-lg" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>
+               <button class="btn btn-secondary btn-lg" id="back-to-orders-btn">Go Back to Orders</button>
+             </div>
+           </div>
+         </div>
+       </div>`;
+
+  renderToDOM('#add-button', buttonString);
+};
+
+const showOrderItems = (array, firebaseKey, orderStatus = 'open') => {
   clearDOM();
 
-  const total = `<h1>TOTAL:${getValues(array)}</h1>`;
+  // Calculate and format total
+  const totalValue = getValues(array);
+  const formattedTotal = formatPrice(totalValue);
+
+  // Render total amount
+  const total = `
+    <div class="container mt-4">
+      <div class="row">
+        <div class="col-12">
+          <h1 class="text-center mb-4">TOTAL: ${formattedTotal}</h1>
+          ${orderStatus === 'closed'
+    ? '<div class="alert alert-info text-center mb-4">This order is closed.</div>'
+    : ''}
+        </div>
+      </div>
+    </div>`;
 
   renderToDOM('#form-container', total);
-  // hi
-  let domString = '';
+
+  // Render order items
+  let domString = '<div class="container"><div class="row">';
   array.forEach((item) => {
+    const formattedPrice = formatPrice(item.item_price);
     domString += `
-    <div class="card" style="width: 18rem;">
-      <div class="card-body">
-        <h5 class="card-title">${item.item_name}</h5>
-        <h6 class="card-subtitle mb-2 text-muted">PRICE: ${item.item_price}</h6>
-        <i class="fas fa-edit btn btn-info" id="edit-orderItem-btn--${item.firebaseKey}2--${firebaseKey}"></i>
-        <i class="btn btn-danger fas fa-trash-alt" id="delete-orderItem-btn--${item.firebaseKey}"></i>
-      </div>
-    </div>
-    `;
+      <div class="col-12 col-md-6 col-lg-4 mb-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title">${item.item_name}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">PRICE: ${formattedPrice}</h6>
+            ${orderStatus === 'open' ? `
+              <div class="d-flex justify-content-end gap-2 mt-3">
+                <button class="btn btn-lg btn-outline-primary" id="edit-orderItem-btn--${item.firebaseKey}--${firebaseKey}">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <button class="btn btn-lg btn-outline-danger" id="delete-orderItem-btn--${item.firebaseKey}">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      </div>`;
   });
+  domString += '</div></div>';
+
   renderToDOM('#orders-container', domString);
-  const btnString = `
-  <button class="btn btn-success btn-lg mb-4" id="add-item-btn--${firebaseKey}">Add Item</button>
-  <button class="btn btn-primary btn-lg mb-4" id="go-to-payment-btn--${firebaseKey}">Go To Payment</button>`;
-  renderToDOM('#add-button', btnString);
+
+  // Render action buttons (only once)
+  renderOrderButtons(firebaseKey, orderStatus);
 };
 
 export { emptyOrderItems, showOrderItems };

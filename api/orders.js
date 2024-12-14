@@ -72,8 +72,12 @@ const getOpenOrders = (uid) => new Promise((resolve, reject) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      const isOpen = Object.values(data).filter((item) => item.status);
-      resolve(isOpen);
+      if (data) {
+        const openOrders = Object.values(data).filter((item) => item.status === 'open');
+        resolve(openOrders);
+      } else {
+        resolve([]);
+      }
     })
     .catch(reject);
 });
