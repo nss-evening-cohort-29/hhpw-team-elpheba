@@ -86,7 +86,7 @@ const showOrderItems = (array, firebaseKey, orderStatus = 'open') => {
                 <button class="btn btn-lg btn-outline-primary" id="edit-orderItem-btn--${item.firebaseKey}--${firebaseKey}">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-lg btn-outline-danger" id="delete-orderItem-btn--${item.firebaseKey}">
+                <button class="btn btn-lg btn-outline-danger" id="delete-orderItem-btn--${item.firebaseKey}--${firebaseKey}">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </div>
