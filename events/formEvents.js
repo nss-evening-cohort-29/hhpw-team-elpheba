@@ -37,6 +37,23 @@ const formEvents = (user) => {
       });
     }
 
+    // CLICK EVENT FOR EDITING AN ORDER
+    if (e.target.id.includes('update-order')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      const payload = {
+        // left out date, status, total amount, and uid as this function is only for editing text on the card by the user
+        customer_email: document.querySelector('#customer-email').value,
+        customer_phone: document.querySelector('#customer-phone').value,
+        order_name: document.querySelector('#order-name').value,
+        order_type: document.querySelector('#order-type').value,
+        firebaseKey
+      };
+
+      updateOrder(payload).then(() => {
+        getOrders(user.uid).then(showOrders);
+      });
+    }
+
     // CLICK EVENT FOR SUBMITTING AN ORDER ITEM
     if (e.target.id.includes('submit-the-orderItem')) {
       const [, orderFirebaseKey] = e.target.id.split('--');
