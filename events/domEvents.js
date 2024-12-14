@@ -6,6 +6,7 @@ import clearDOM from '../utils/clearDom';
 import addOrderItemForm from '../pages/createOrderItemPage';
 import closeOrderPage from '../pages/closeOrderPage';
 import renderToDOM from '../utils/renderToDom';
+import createOrderPage from '../pages/createOrderPage';
 
 const domEvents = (user) => {
   document.addEventListener('click', (e) => {
@@ -39,6 +40,14 @@ const domEvents = (user) => {
       clearDOM();
       const [, firebaseKey] = e.target.id.split('--');
       addOrderItemForm(firebaseKey);
+    }
+
+    // CLICK EVEN ON "EDIT" BUTTON ON AN ORDER
+    if (e.target.id.includes('order-card-edit')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      getSingleOrder(firebaseKey).then((orderObj) => {
+        createOrderPage(orderObj);
+      });
     }
 
     // CLICK EVENT ON "EDIT" BUTTON ON AN ORDER ITEM
