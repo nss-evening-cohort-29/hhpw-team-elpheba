@@ -1,6 +1,6 @@
 import { getOrders, updateOrder, createOrder } from '../api/orders';
 import { showOrders } from '../pages/ordersPage';
-import { createOrderItem, getOrderItems } from '../api/orderItems';
+import { createOrderItem, getOrderItems, updateOrderItem } from '../api/orderItems';
 import { showOrderItems } from '../pages/orderItemsPage';
 
 const formEvents = (user) => {
@@ -49,10 +49,8 @@ const formEvents = (user) => {
     }
     // Click event for submit an order item
     if (e.target.id.includes('submit-the-orderItem')) {
-      console.warn('clicked add/edit item');
       const [, orderFirebaseKey] = e.target.id.split('--'); // this will be the firebaseKey of order via the latter condition of the ternary for the id in the form to create an order
-      // we need this to add the order firebaseKey to order_id in payload below so that the order item is associated with its' order
-      console.warn(orderFirebaseKey);
+      // we need this to add the order firebaseKey to order_id in payload below so that the order item is associated with its' order, since that how getOrderItems is fetching order items
       const payload = {
         created_at: Date.now(),
         item_name: document.querySelector('#item_name').value,
@@ -62,9 +60,32 @@ const formEvents = (user) => {
         quantity: 1
       };
 
-      createOrderItem(payload);
-      getOrderItems(orderFirebaseKey).then((items) => showOrderItems(items, orderFirebaseKey));
+      createOrderItem(payload).then(({ name }) => {
+        // after creation, patch the payload with the firebaseKey
+        const patchPayload = { firebaseKey: name };
+
+        updateOrderItem(patchPayload).then(() => {
+          getOrderItems(orderFirebaseKey).then((items) => showOrderItems(items, orderFirebaseKey));
+        });
+      });
     }
+
+    // click event for submiting form to update an order item
+    if (e.target.id.includes('update-the-orderItem')) {
+      const [, orderFirebaseKey] = e.target.id.split('--');
+      const payload = {
+        created_at: Date.now(),
+        item_name: document.querySelector('#item_name').value,
+        item_price: document.querySelector('#item_price').value,
+        menu_item_id: 'placeholder',
+        order_id: orderFirebaseKey,
+        quantity: 1
+      };
+      updateOrderItem(payload).then(() => {
+        getOrderItems(orderFirebaseKey).then((items) => showOrderItems(items, orderFirebaseKey));
+      });
+    }
+
     // CLICK EVENT FOR CLOSING AN ORDER
     if (e.target.id.includes('close-order')) {
       const [, firebaseKey] = e.target.id.split('--');

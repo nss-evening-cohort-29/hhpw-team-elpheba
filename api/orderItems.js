@@ -20,7 +20,6 @@ const getOrderItems = (firebaseKey) => new Promise((resolve, reject) => {
 });
 
 // GET SINGLE ORDER_ITEM
-// We likely won't need to use this, but leaving it just in case
 const getSingleOrderItem = (firebaseKey) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/order_items/${firebaseKey}.json`, {
     method: 'GET',
