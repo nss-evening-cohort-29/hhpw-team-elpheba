@@ -14,7 +14,7 @@ const createOrderCard = (item) => {
   const orderType = item.order_type === 'dine_in' ? 'in-person' : 'phone';
 
   return `
-    <div class="order-card">
+    <div class="order-card d-block" data-status="${item.status}">
       <h5 class="card-title">${item.order_name}</h5>
       <div class="order-info">
         <div class="order-status ${item.status.toLowerCase()}">
@@ -34,16 +34,23 @@ const createOrderCard = (item) => {
     </div>`;
 };
 
-// Updates the visibility of order cards based on search term
-const updateOrderVisibility = (searchTerm) => {
+// Updates the visibility of order cards based on search term and status filter
+const updateOrderVisibility = (searchTerm = '', statusFilter = 'all') => {
   const orderCards = document.querySelectorAll('.order-card');
   const searchLower = searchTerm.toLowerCase();
 
-  orderCards.forEach((card) => {
-    const cardContent = card.textContent.toLowerCase();
-    const cardClone = card.cloneNode(true);
-    cardClone.style.display = cardContent.includes(searchLower) ? 'block' : 'none';
-    card.parentNode.replaceChild(cardClone, card);
+  orderCards.forEach((orderCard) => {
+    const cardContent = orderCard.textContent.toLowerCase();
+    const cardStatus = orderCard.dataset.status;
+    const matchesSearch = cardContent.includes(searchLower);
+    const matchesStatus = statusFilter === 'all' || cardStatus === statusFilter;
+
+    // Use classList instead of style.display
+    if (matchesSearch && matchesStatus) {
+      orderCard.classList.remove('d-none');
+    } else {
+      orderCard.classList.add('d-none');
+    }
   });
 };
 
@@ -52,24 +59,81 @@ const setupSearch = (searchInput) => {
   if (!searchInput) return;
 
   searchInput.addEventListener('input', (e) => {
-    updateOrderVisibility(e.target.value);
+    const activeButton = document.querySelector('.filter-btn.active');
+    const activeFilter = activeButton ? activeButton.dataset.filter : 'all';
+    updateOrderVisibility(e.target.value, activeFilter);
+  });
+};
+
+// Sets up filter buttons functionality
+const setupFilterButtons = () => {
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach((button) => {
+    button.addEventListener('click', (e) => {
+      // Remove active class from all buttons
+      filterButtons.forEach((btn) => btn.classList.remove('active'));
+      // Add active class to clicked button
+      const clickedButton = e.target;
+      clickedButton.classList.add('active');
+
+      const searchInput = document.querySelector('#search-orders-input');
+      const searchTerm = searchInput ? searchInput.value : '';
+      updateOrderVisibility(searchTerm, clickedButton.dataset.filter);
+    });
   });
 };
 
 // Renders the orders view with search and order cards
-const showOrders = (array) => {
+const showOrders = (array, defaultFilter = 'all') => {
   clearDom();
 
+  if (!array.length) {
+    emptyOrders();
+    return;
+  }
+
   const domString = `
-    <div class="search-orders">
-      <input type="text" placeholder="Search Orders" id="search-orders-input">
-    </div>
-    <div class="orders-grid">
-      ${array.map(createOrderCard).join('')}
+    <div class="orders-container">
+      <div class="orders-header mb-4">
+        <div class="d-flex align-items-center gap-2">
+          <div class="btn-group me-3" role="group" aria-label="Order filters">
+            <button class="btn btn-outline-black filter-btn ${defaultFilter === 'all' ? 'active' : ''}" data-filter="all">
+              <i class="fas fa-list me-1"></i>
+            </button>
+            <button class="btn btn-outline-warning filter-btn ${defaultFilter === 'open' ? 'active' : ''}" data-filter="open">
+              <i class="fas fa-clock"></i>
+              <span class="visually-hidden">Open Orders</span>
+            </button>
+            <button class="btn btn-outline-success filter-btn ${defaultFilter === 'closed' ? 'active' : ''}" data-filter="closed">
+              <i class="fas fa-check-circle"></i>
+              <span class="visually-hidden">Closed Orders</span>
+            </button>
+          </div>
+          <div class="search-orders flex-grow-1">
+            <div class="input-group">
+              <span class="input-group-text bg-transparent">
+                <i class="fas fa-search"></i>
+              </span>
+              <input type="text" placeholder="Search Orders" id="search-orders-input" class="form-control border-start-0">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="orders-grid">
+        ${array.map(createOrderCard).join('')}
+      </div>
     </div>`;
 
   renderToDOM('#orders-container', domString);
+
+  // Set up search and filter functionality
   setupSearch(document.querySelector('#search-orders-input'));
+  setupFilterButtons();
+
+  // Apply initial filter if specified
+  if (defaultFilter !== 'all') {
+    updateOrderVisibility('', defaultFilter);
+  }
 };
 
 export {

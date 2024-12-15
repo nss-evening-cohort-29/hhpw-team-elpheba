@@ -1,6 +1,8 @@
 import renderToDOM from '../utils/renderToDom';
 import { getOrders } from '../api/orders';
 import { showOrders } from './ordersPage';
+import { formatCurrency, getTodayStats, getUniqueCustomers } from '../utils/helperFunctions';
+import createOrderPage from './createOrderPage';
 
 const adminPageEvents = (user) => {
   // Helper function to safely add event listeners
@@ -13,17 +15,17 @@ const adminPageEvents = (user) => {
 
   // View Orders
   addClickHandler('#admin-view-orders', () => {
-    getOrders(user.uid).then(showOrders);
+    getOrders(user.uid).then((orders) => showOrders(orders, 'all'));
   });
 
   // Create Order
   addClickHandler('#admin-create-order', () => {
-    const domString = `
-      <div class="create-order-container">
-        <h1>Create New Order</h1>
-        <div id="create-order-form"></div>
-      </div>`;
-    renderToDOM('#admin-dashboard', domString);
+    createOrderPage();
+  });
+
+  // Closed Orders
+  addClickHandler('#admin-closed-orders', () => {
+    getOrders(user.uid).then((orders) => showOrders(orders, 'closed'));
   });
 
   // View Revenue
@@ -36,111 +38,42 @@ const adminPageEvents = (user) => {
     renderToDOM('#admin-dashboard', domString);
   });
 
-  // Manage Menu
-  addClickHandler('#admin-manage-menu', () => {
-    const domString = `
-      <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1>Menu Management</h1>
-          <button class="btn btn-success" id="add-menu-item">
-            <i class="fas fa-plus"></i> Add Menu Item
-          </button>
-        </div>
-        <div id="menu-items-container"></div>
-      </div>`;
-    renderToDOM('#admin-dashboard', domString);
-  });
-
-  // Manage Users
-  addClickHandler('#admin-manage-users', () => {
-    const domString = `
-      <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h1>User Management</h1>
-          <button class="btn btn-success" id="add-user">
-            <i class="fas fa-user-plus"></i> Add User
-          </button>
-        </div>
-        <div id="users-container"></div>
-      </div>`;
-    renderToDOM('#admin-dashboard', domString);
-  });
-
-  // System Settings
-  addClickHandler('#admin-settings', () => {
-    const domString = `
-      <div class="container mt-4">
-        <h1>System Settings</h1>
-        <div class="row mt-4">
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h4>General Settings</h4>
-              </div>
-              <div class="card-body">
-                <form id="general-settings-form">
-                  <!-- TODO: Add Settings fields here -->
-                </form>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="card">
-              <div class="card-header">
-                <h4>Notification Settings</h4>
-              </div>
-              <div class="card-body">
-                <form id="notification-settings-form">
-                  <!-- TODO: Add notification settings here -->
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>`;
-    renderToDOM('#admin-dashboard', domString);
-  });
-
   // Refresh Stats
   addClickHandler('#refresh-stats', async () => {
     try {
-      // Update stats display
-      const updateStatDisplay = (elementId, value) => {
-        const element = document.querySelector(elementId);
-        if (element) {
-          element.textContent = value;
-        }
-      };
+      // Show loading state
+      const statsElements = document.querySelectorAll('.stats-value');
+      const spinner = '<div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">Loading...</span></div>';
+      Array.from(statsElements).forEach((statsElement) => {
+        const elementCopy = statsElement;
+        elementCopy.innerHTML = spinner;
+      });
 
-      // Get today's date for filtering
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-
-      // Get orders for today
-      const todaysOrders = await getOrders(user.uid);
-      const todaysOrderCount = todaysOrders.filter((order) => {
-        const orderDate = new Date(order.date);
-        return orderDate >= today;
-      }).length;
-
-      // Get open orders
-      const openOrders = todaysOrders.filter((order) => order.status === 'pending').length;
-
-      // Calculate revenue (assuming orders have an amount field)
-      const todaysRevenue = todaysOrders
-        .filter((order) => {
-          const orderDate = new Date(order.date);
-          return orderDate >= today;
-        })
-        .reduce((total, order) => total + (order.amount || 0), 0);
+      // Get orders and calculate stats
+      const orders = await getOrders(user.uid);
+      const { todayOrderCount, openOrderCount, todayRevenue } = await getTodayStats(orders);
+      const uniqueCustomers = getUniqueCustomers(orders);
 
       // Update the display
-      updateStatDisplay('#today-orders', todaysOrderCount);
-      updateStatDisplay('#open-orders', openOrders);
-      updateStatDisplay('#today-revenue', `$${todaysRevenue.toFixed(2)}`);
-      updateStatDisplay('#orders-count', `${openOrders} Active`);
+      const stats = {
+        '#today-orders': todayOrderCount,
+        '#open-orders': openOrderCount,
+        '#today-revenue': formatCurrency(todayRevenue),
+        '#total-customers': uniqueCustomers,
+        '#orders-count': `${openOrderCount} Active`
+      };
 
-      // Show a success message
+      Object.entries(stats).forEach(([selector, value]) => {
+        const element = document.querySelector(selector);
+        if (element) {
+          element.textContent = value;
+          // Add fade-in animation
+          element.classList.add('fade-in');
+          setTimeout(() => element.classList.remove('fade-in'), 500);
+        }
+      });
+
+      // Show success message
       const activityFeed = document.querySelector('#recent-activity');
       if (activityFeed) {
         activityFeed.innerHTML = `
@@ -150,8 +83,10 @@ const adminPageEvents = (user) => {
           <p class="text-muted">Last updated: ${new Date().toLocaleTimeString()}</p>
         `;
       }
+      return true;
     } catch (error) {
-      // Handle any errors
+      console.error('Error refreshing stats:', error);
+      // Show error message
       const activityFeed = document.querySelector('#recent-activity');
       if (activityFeed) {
         activityFeed.innerHTML = `
@@ -160,127 +95,154 @@ const adminPageEvents = (user) => {
           </div>
         `;
       }
+      return false;
     }
   });
 };
 
-const showAdminDashboard = (user) => {
-  const today = new Date().toLocaleDateString();
+const showAdminDashboard = async (user) => {
+  try {
+    const orders = await getOrders(user.uid);
+    const { todayOrderCount, openOrderCount, todayRevenue } = await getTodayStats(orders);
+    const uniqueCustomers = getUniqueCustomers(orders);
 
-  const domString = `
-    <!-- Welcome Section -->
-    <div class="admin-header text-center mb-4">
-      <h1>Welcome ${user.displayName}!</h1>
-      <p class="lead">Hip Hop Pizza & Wings Management System</p>
-      <p class="text-muted">Today: ${today}</p>
-    </div>
-
-    <!-- Quick Stats Section -->
-    <div class="card mb-4">
-      <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
-        <h3 class="m-0">Quick Stats</h3>
-        <button class="btn btn-outline-light btn-sm" id="refresh-stats">
-          <i class="fas fa-sync-alt"></i> Refresh
-        </button>
+    const domString = `
+      <!-- Welcome Section -->
+      <div class="admin-header text-center mb-4">
+        <h1>Welcome ${user.displayName || 'Admin'}!</h1>
+        <p class="lead">Hip Hop Pizza & Wings Management System</p>
+        <p class="text-muted">Today: ${new Date().toLocaleDateString()}</p>
       </div>
-      <div class="card-body">
-        <div class="row text-center">
-          <div class="col-md-3">
-            <div class="stats-item">
-              <i class="fas fa-clipboard-list fa-2x mb-2 text-primary"></i>
-              <h4>Today's Orders</h4>
-              <p class="h2" id="today-orders">0</p>
+
+      <!-- Quick Stats Section -->
+      <div class="card mb-4">
+        <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+          <h3 class="m-0">Quick Stats</h3>
+          <button class="btn btn-outline-light btn-sm" id="refresh-stats">
+            <i class="fas fa-sync-alt"></i> Refresh
+          </button>
+        </div>
+        <div class="card-body">
+          <div class="row text-center">
+            <div class="col-md-3">
+              <div class="stats-item">
+                <i class="fas fa-clipboard-list fa-2x mb-2 text-primary"></i>
+                <h4>Today's Orders</h4>
+                <p class="h2 stats-value" id="today-orders">${todayOrderCount}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="stats-item">
-              <i class="fas fa-clock fa-2x mb-2 text-warning"></i>
-              <h4>Open Orders</h4>
-              <p class="h2" id="open-orders">0</p>
+            <div class="col-md-3">
+              <div class="stats-item">
+                <i class="fas fa-clock fa-2x mb-2 text-warning"></i>
+                <h4>Open Orders</h4>
+                <p class="h2 stats-value" id="open-orders">${openOrderCount}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="stats-item">
-              <i class="fas fa-dollar-sign fa-2x mb-2 text-success"></i>
-              <h4>Today's Revenue</h4>
-              <p class="h2" id="today-revenue">$0</p>
+            <div class="col-md-3">
+              <div class="stats-item">
+                <i class="fas fa-dollar-sign fa-2x mb-2 text-success"></i>
+                <h4>Today's Revenue</h4>
+                <p class="h2 stats-value" id="today-revenue">${formatCurrency(todayRevenue)}</p>
+              </div>
             </div>
-          </div>
-          <div class="col-md-3">
-            <div class="stats-item">
-              <i class="fas fa-users fa-2x mb-2 text-info"></i>
-              <h4>Total Customers</h4>
-              <p class="h2" id="total-customers">0</p>
+            <div class="col-md-3">
+              <div class="stats-item">
+                <i class="fas fa-users fa-2x mb-2 text-info"></i>
+                <h4>Total Customers</h4>
+                <p class="h2 stats-value" id="total-customers">${uniqueCustomers}</p>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <!-- Main Actions Grid -->
-    <div class="row g-4">
-      <!-- Order Management Card -->
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-            <h3 class="m-0">Order Management</h3>
-            <span class="badge bg-light text-primary" id="orders-count">0 Active</span>
+      <!-- Main Actions Grid -->
+      <div class="row g-4">
+        <!-- Order Management Card -->
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+              <h3 class="m-0">Order Management</h3>
+              <span class="badge bg-light text-primary" id="orders-count">${openOrderCount} Active</span>
+            </div>
+            <div class="card-body d-grid gap-2">
+              <button class="btn btn-info btn-lg w-100" id="admin-view-orders">
+                <i class="fas fa-list me-2"></i> View Orders
+              </button>
+              <button class="btn btn-primary btn-lg w-100" id="admin-create-order">
+                <i class="fas fa-plus me-2"></i> Create New Order
+              </button>
+              <button class="btn btn-success btn-lg w-100" id="admin-closed-orders">
+                <i class="fas fa-clock me-2"></i> Closed Orders
+              </button>
+            </div>
           </div>
-          <div class="card-body d-grid gap-2">
-            <button class="btn btn-info btn-lg w-100" id="admin-view-orders">
-              <i class="fas fa-list me-2"></i> View Orders
-            </button>
-            <button class="btn btn-success btn-lg w-100" id="admin-create-order">
-              <i class="fas fa-plus me-2"></i> Create New Order
-            </button>
-            <button class="btn btn-warning btn-lg w-100" id="admin-closed-orders">
-              <i class="fas fa-clock me-2"></i> Closed Orders
-            </button>
+        </div>
+
+        <!-- Admin Controls Card -->
+        <div class="col-md-6">
+          <div class="card h-100">
+            <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
+              <h3 class="m-0">Admin Controls</h3>
+              <span class="badge bg-dark">Admin Access</span>
+            </div>
+            <div class="card-body d-grid gap-2">
+              <button class="btn btn-warning btn-lg w-100" id="admin-view-revenue">
+                <i class="fas fa-chart-line me-2"></i> Revenue Reports
+              </button>
+              <button class="btn btn-primary btn-lg w-100" id="admin-manage-menu">
+                <i class="fas fa-utensils me-2"></i> Manage Menu
+              </button>
+              <button class="btn btn-info btn-lg w-100" id="admin-manage-users">
+                <i class="fas fa-users me-2"></i> Manage Users
+              </button>
+              <button class="btn btn-secondary btn-lg w-100" id="admin-settings">
+                <i class="fas fa-cog me-2"></i> System Settings
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Admin Controls Card -->
-      <div class="col-md-6">
-        <div class="card h-100">
-          <div class="card-header bg-warning text-dark d-flex justify-content-between align-items-center">
-            <h3 class="m-0">Admin Controls</h3>
-            <span class="badge bg-dark">Admin Access</span>
-          </div>
-          <div class="card-body d-grid gap-2">
-            <button class="btn btn-warning btn-lg w-100" id="admin-view-revenue">
-              <i class="fas fa-chart-line me-2"></i> Revenue Reports
-            </button>
-            <button class="btn btn-primary btn-lg w-100" id="admin-manage-menu">
-              <i class="fas fa-utensils me-2"></i> Manage Menu
-            </button>
-            <button class="btn btn-info btn-lg w-100" id="admin-manage-users">
-              <i class="fas fa-users me-2"></i> Manage Users
-            </button>
-            <button class="btn btn-secondary btn-lg w-100" id="admin-settings">
-              <i class="fas fa-cog me-2"></i> System Settings
-            </button>
+      <!-- Recent Activity Section -->
+      <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+          <h3 class="m-0">Recent Activity</h3>
+        </div>
+        <div class="card-body">
+          <div class="activity-feed" id="recent-activity">
+            <p class="text-muted text-center">Loading recent activity...</p>
           </div>
         </div>
-      </div>
-    </div>
+      </div>`;
 
-    <!-- Recent Activity Section -->
-    <div class="card mt-4">
-      <div class="card-header bg-info text-white">
-        <h3 class="m-0">Recent Activity</h3>
-      </div>
-      <div class="card-body">
-        <div class="activity-feed" id="recent-activity">
-          <p class="text-muted text-center">Loading recent activity...</p>
-        </div>
-      </div>
-    </div>`;
+    renderToDOM('#admin-dashboard', domString);
 
-  renderToDOM('#admin-dashboard', domString);
+    // Add event listeners for admin page
+    adminPageEvents(user);
 
-  // Add event listeners for admin page
-  adminPageEvents(user);
+    // Set up auto-refresh every 5 minutes
+    const autoRefreshInterval = setInterval(() => {
+      const refreshButton = document.querySelector('#refresh-stats');
+      if (refreshButton) {
+        refreshButton.click();
+      }
+    }, 300000); // 5 minutes
+
+    // Clean up interval when component unmounts
+    return () => clearInterval(autoRefreshInterval);
+  } catch (error) {
+    console.error('Error loading admin dashboard:', error);
+    const errorString = `
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Error Loading Dashboard</h4>
+        <p>${error.message}</p>
+        <hr>
+        <p class="mb-0">Please try refreshing the page or contact support if the problem persists.</p>
+      </div>`;
+    renderToDOM('#admin-dashboard', errorString);
+    return undefined;
+  }
 };
 
 export default showAdminDashboard;
