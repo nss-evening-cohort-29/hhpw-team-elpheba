@@ -5,32 +5,38 @@ import showAdminDashboard from '../pages/adminPage';
 import revenuePage from '../pages/revenuePage';
 import createOrderPage from '../pages/createOrderPage';
 
-const navigationEvents = (user) => {
-  // Clear main container and reset view
-  const clearMainContainer = () => {
-    document.querySelector('#main-container').innerHTML = `
-      <div id="form-container"></div>
-      <div id="orders-container"></div>
-      <div id="admin-dashboard"></div>
-      <div id="revenue-page"></div>
-      <div id="add-button"></div>
-    `;
-  };
+const clearMainContainer = () => {
+  document.querySelector('#main-container').innerHTML = `
+    <div id="form-container"></div>
+    <div id="orders-container"></div>
+    <div id="admin-dashboard"></div>
+    <div id="revenue-page"></div>
+    <div id="add-button"></div>
+  `;
+};
 
+const addClickHandler = (elementId, handler) => {
+  const element = document.querySelector(elementId);
+  if (element) {
+    element.addEventListener('click', handler);
+  }
+};
+
+const navigationEvents = (user) => {
   // HOME/ADMIN DASHBOARD
-  document.querySelector('#logo-admin-panel').addEventListener('click', () => {
+  addClickHandler('#logo-admin-panel', () => {
     clearMainContainer();
     showAdminDashboard(user);
   });
 
   // HOME/ADMIN DASHBOARD
-  document.querySelector('#admin-home').addEventListener('click', () => {
+  addClickHandler('#admin-home', () => {
     clearMainContainer();
     showAdminDashboard(user);
   });
 
   // VIEW ORDERS
-  document.querySelector('#view-orders').addEventListener('click', () => {
+  addClickHandler('#view-orders', () => {
     clearMainContainer();
     getOrders(user.uid).then((orders) => {
       if (orders.length) {
@@ -42,13 +48,13 @@ const navigationEvents = (user) => {
   });
 
   // CREATE ORDER
-  document.querySelector('#create-order').addEventListener('click', () => {
+  addClickHandler('#create-order', () => {
     clearMainContainer();
-    createOrderPage();
+    createOrderPage(user);
   });
 
   // VIEW REVENUE
-  document.querySelector('#view-revenue').addEventListener('click', () => {
+  addClickHandler('#view-revenue', () => {
     clearMainContainer();
     revenuePage();
   });

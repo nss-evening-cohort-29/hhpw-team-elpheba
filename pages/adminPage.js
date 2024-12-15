@@ -20,7 +20,7 @@ const adminPageEvents = (user) => {
 
   // Create Order
   addClickHandler('#admin-create-order', () => {
-    createOrderPage();
+    createOrderPage(user);
   });
 
   // Closed Orders

@@ -46,7 +46,7 @@ const domEvents = (user) => {
     if (e.target.id.includes('order-card-edit')) {
       const [, firebaseKey] = e.target.id.split('--');
       getSingleOrder(firebaseKey).then((orderObj) => {
-        createOrderPage(orderObj);
+        createOrderPage(user, orderObj);
       });
     }
 
