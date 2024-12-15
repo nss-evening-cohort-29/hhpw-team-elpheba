@@ -46,6 +46,23 @@
   max-width: 1400px;
   margin: 0 auto;
 
+  // Loading Container
+  .loading-container {
+    padding: 3rem;
+    text-align: center;
+
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      color: $color-gold;
+    }
+
+    p {
+      color: $color-dark-gray;
+      margin-top: 1rem;
+    }
+  }
+
   .revenue-header {
     margin-bottom: 2rem;
     display: flex;
@@ -57,6 +74,8 @@
     h1 {
       margin: 0;
       color: $color-dark-gray;
+      font-size: 2rem;
+      font-weight: 600;
     }
 
     .date-filter {
@@ -79,6 +98,17 @@
           }
         }
       }
+
+      .invalid-feedback {
+        display: none;
+        color: $color-red;
+        margin-top: 0.5rem;
+        font-size: 0.875rem;
+
+        &.show {
+          display: block;
+        }
+      }
     }
   }
 
@@ -86,10 +116,26 @@
   .card {
     height: 100%;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    background: $color-white;
+    border-radius: 0.5rem;
+    overflow: hidden;
 
     &:hover {
       transform: translateY(-5px);
       box-shadow: 0 5px 15px rgba($color-black, 0.1);
+    }
+
+    .card-header {
+      background: none;
+      border-bottom: 2px solid rgba($color-gold, 0.2);
+      padding: 1rem 1.5rem;
+
+      h3 {
+        margin: 0;
+        font-size: 1.25rem;
+        color: $color-dark-gray;
+      }
     }
 
     .card-body {
@@ -100,6 +146,7 @@
         color: $color-dark-gray;
         font-size: 1rem;
         margin-bottom: 1rem;
+        font-weight: 500;
       }
 
       .card-text {
@@ -110,88 +157,11 @@
         &.h2 {
           font-size: 2rem;
           color: $color-gold;
-        }
-      }
-    }
-  }
 
-  // Revenue Chart
-  .revenue-chart {
-    height: 300px;
-    position: relative;
-    padding: 1rem;
-
-    .chart-container {
-      display: flex;
-      align-items: flex-end;
-      gap: 4px;
-      height: 200px;
-      padding-bottom: 2rem;
-
-      .chart-bar {
-        flex: 1;
-        background: linear-gradient(to top, $color-gold, lighten($color-gold, 20%));
-        border-radius: 4px 4px 0 0;
-        position: relative;
-        transition: all 0.3s ease;
-        min-width: 20px;
-
-        &:hover {
-          transform: scaleY(1.02);
-          background: linear-gradient(to top, darken($color-gold, 10%), $color-gold);
-
-          .chart-bar-tooltip {
-            opacity: 1;
-            transform: translateY(0);
+          .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
           }
         }
-
-        .chart-bar-tooltip {
-          position: absolute;
-          bottom: 100%;
-          left: 50%;
-          transform: translateX(-50%) translateY(10px);
-          background: rgba($color-black, 0.8);
-          color: $color-white;
-          padding: 0.5rem;
-          border-radius: 4px;
-          font-size: 0.8rem;
-          white-space: nowrap;
-          opacity: 0;
-          transition: all 0.3s ease;
-          pointer-events: none;
-          z-index: 1;
-
-          &:after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            border: 6px solid transparent;
-            border-top-color: rgba($color-black, 0.8);
-          }
-        }
-      }
-    }
-
-    .chart-axis {
-      position: absolute;
-      bottom: 0;
-      left: 1rem;
-      right: 1rem;
-      display: flex;
-      justify-content: space-between;
-      padding-top: 0.5rem;
-      border-top: 1px solid $color-light-gray;
-
-      .chart-label {
-        font-size: 0.8rem;
-        color: $color-dark-gray;
-        transform: rotate(-45deg);
-        transform-origin: top left;
-        white-space: nowrap;
-        margin-left: 1rem;
       }
     }
   }
@@ -208,13 +178,61 @@
 
       &:hover {
         background: rgba($color-gold, 0.1);
+        transform: translateX(5px);
       }
 
       .badge {
         font-size: 0.9rem;
         padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+
+        &:hover {
+          transform: scale(1.1);
+        }
       }
     }
+  }
+
+  // Alert Styles
+  .alert {
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border: none;
+
+    &.alert-danger {
+      background-color: rgba($color-red, 0.1);
+      color: $color-red;
+      border-left: 4px solid $color-red;
+
+      .btn-outline-danger {
+        color: $color-red;
+        border-color: $color-red;
+
+        &:hover {
+          background-color: $color-red;
+          color: $color-white;
+        }
+      }
+    }
+
+    &.alert-info {
+      background-color: rgba($color-gold, 0.1);
+      color: $color-dark-gray;
+      border-left: 4px solid $color-gold;
+    }
+  }
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
@@ -227,29 +245,22 @@
       flex-direction: column;
       align-items: stretch;
 
+      h1 {
+        font-size: 1.5rem;
+        text-align: center;
+      }
+
       .date-filter {
         max-width: 100%;
       }
     }
 
     .card {
+      margin-bottom: 1rem;
+
       .card-body {
         .card-text.h2 {
           font-size: 1.5rem;
-        }
-      }
-    }
-
-    .revenue-chart {
-      height: 250px;
-
-      .chart-container {
-        height: 150px;
-      }
-
-      .chart-axis {
-        .chart-label {
-          font-size: 0.7rem;
         }
       }
     }

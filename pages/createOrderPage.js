@@ -196,11 +196,14 @@ const createOrderPage = (user, obj = {}) => {
           payload.total_amount = '0.00';
           payload.user_id = user.uid;
 
-          createOrder(payload).then(({ name }) => {
-            const patchPayload = { firebaseKey: name };
-            updateOrder(patchPayload).then(() => {
+          createOrder(payload).then(() => {
+            // Navigate to View Orders by triggering the button click
+            const viewOrdersBtn = document.querySelector('#view-orders');
+            if (viewOrdersBtn) {
+              viewOrdersBtn.click();
+            } else {
               getOrders(user.uid).then(showOrders);
-            });
+            }
           }).catch((error) => {
             console.error('Error creating order:', error);
             const errorAlert = document.createElement('div');

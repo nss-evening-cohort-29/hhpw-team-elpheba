@@ -66,7 +66,7 @@ const getUniqueCustomers = (orders) => {
   return Math.max(uniquePhones.size, uniqueEmails.size);
 };
 
-const calculateRevenue = (orders = [], startDate = null, endDate = null) => {
+const calculateRevenue = async (orders = [], startDate = null, endDate = null) => {
   if (!orders.length) {
     return {
       totalRevenue: 0,
@@ -81,7 +81,8 @@ const calculateRevenue = (orders = [], startDate = null, endDate = null) => {
       },
       orderTypeBreakdown: {
         dine_in: 0,
-        phone: 0
+        phone: 0,
+        carryout: 0
       }
     };
   }
@@ -96,8 +97,12 @@ const calculateRevenue = (orders = [], startDate = null, endDate = null) => {
     return true;
   });
 
-  const result = filteredOrders.reduce((acc, order) => {
-    const orderTotal = order.total_amount ? parseFloat(order.total_amount) : 0;
+  // Get order items for all filtered orders
+  const orderPromises = filteredOrders.map((order) => getOrderItems(order.firebaseKey));
+  const orderItemsArrays = await Promise.all(orderPromises);
+
+  const result = filteredOrders.reduce((acc, order, index) => {
+    const orderTotal = getValues(orderItemsArrays[index]);
     const tipAmount = order.tip_amount ? parseFloat(order.tip_amount) : 0;
 
     acc.totalRevenue += orderTotal;
@@ -131,7 +136,8 @@ const calculateRevenue = (orders = [], startDate = null, endDate = null) => {
     },
     orderTypeBreakdown: {
       dine_in: 0,
-      phone: 0
+      phone: 0,
+      carryout: 0
     }
   });
 

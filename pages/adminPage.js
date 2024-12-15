@@ -3,6 +3,7 @@ import { getOrders } from '../api/orders';
 import { showOrders } from './ordersPage';
 import { formatCurrency, getTodayStats, getUniqueCustomers } from '../utils/helperFunctions';
 import createOrderPage from './createOrderPage';
+import revenuePage from './revenuePage';
 
 const adminPageEvents = (user) => {
   // Helper function to safely add event listeners
@@ -30,12 +31,7 @@ const adminPageEvents = (user) => {
 
   // View Revenue
   addClickHandler('#admin-view-revenue', () => {
-    const domString = `
-      <div class="revenue-container">
-        <h1>Revenue Overview</h1>
-        <div id="revenue-details"></div>
-      </div>`;
-    renderToDOM('#admin-dashboard', domString);
+    revenuePage();
   });
 
   // Refresh Stats

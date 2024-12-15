@@ -23,6 +23,14 @@ const addClickHandler = (elementId, handler) => {
 };
 
 const navigationEvents = (user) => {
+  if (!user) {
+    console.error('No user provided to navigationEvents');
+    return;
+  }
+
+  // Ensure user object is available globally for components that need it
+  window.user = user;
+
   // HOME/ADMIN DASHBOARD
   addClickHandler('#logo-admin-panel', () => {
     clearMainContainer();

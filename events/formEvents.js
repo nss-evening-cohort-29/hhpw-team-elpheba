@@ -1,5 +1,4 @@
-import { getOrders, updateOrder, createOrder } from '../api/orders';
-import { showOrders } from '../pages/ordersPage';
+import { updateOrder } from '../api/orders';
 import {
   createOrderItem as createItem,
   getOrderItems,
@@ -12,40 +11,9 @@ const formatPrice = (price) => {
   return numPrice.toFixed(2);
 };
 
-const formEvents = (user) => {
+const formEvents = () => {
   document.querySelector('#main-container').addEventListener('submit', (e) => {
     e.preventDefault();
-
-    // CLICK EVENT FOR SUBMITTING A NEW ORDER
-    if (e.target.id.includes('submit-order')) {
-      const emailInput = document.querySelector('#customer-email');
-      const phoneInput = document.querySelector('#customer-phone');
-      const nameInput = document.querySelector('#order-name');
-      const typeInput = document.querySelector('#order-type');
-
-      if (!emailInput || !phoneInput || !nameInput || !typeInput) {
-        console.error('Required order inputs are missing. Check the form rendering.');
-        return;
-      }
-
-      const payload = {
-        created_date: Date.now(),
-        customer_email: emailInput.value,
-        customer_phone: phoneInput.value,
-        order_name: nameInput.value,
-        order_type: typeInput.value,
-        status: 'open',
-        total_amount: '0.00',
-        user_id: user.uid
-      };
-
-      createOrder(payload).then(({ name }) => {
-        const patchPayload = { firebaseKey: name };
-        updateOrder(patchPayload).then(() => {
-          getOrders(user.uid).then(showOrders);
-        });
-      });
-    }
 
     // CLICK EVENT FOR SUBMITTING A NEW ORDER ITEM
     if (e.target.id.includes('submit-the-orderItem')) {
@@ -140,7 +108,11 @@ const formEvents = (user) => {
       };
 
       updateOrder(payload).then(() => {
-        getOrders(user.uid).then(showOrders);
+        // Navigate to View Orders by triggering the button click
+        const viewOrdersBtn = document.querySelector('#view-orders');
+        if (viewOrdersBtn) {
+          viewOrdersBtn.click();
+        }
       });
     }
   });
