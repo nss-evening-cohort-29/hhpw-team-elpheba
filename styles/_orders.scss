@@ -5,12 +5,10 @@ $color-text-primary: #000;
 $color-text-secondary: #666;
 
 // Status Colors
-$status-open-bg: #e3f2fd;
-$status-open-text: #1976d2;
+$status-open-bg: #ffc10780;  // Yellowish warning color
+$status-open-text: #664400;   // Darker text for contrast
 $status-closed-bg: #e8f5e9;
 $status-closed-text: #2e7d32;
-$status-pending-bg: #fff3e0;
-$status-pending-text: #f57c00;
 
 // Action Colors
 $action-details: #0066cc;
@@ -18,13 +16,13 @@ $action-edit: #6200ee;
 $action-delete: #dc3545;
 
 // Layout Variables
-$card-border-radius: 4px;
-$card-shadow: 0 1px 3px rgba(0,0,0,0.1);
-$hover-shadow: 0 2px 5px rgba(0,0,0,0.15);
+$card-border-radius: 8px;  // Increased border radius
+$card-shadow: 0 2px 4px rgba(0,0,0,0.1);
+$hover-shadow: 0 4px 8px rgba(0,0,0,0.15);
 $border-color: rgba(0,0,0,0.1);
 $transition-speed: 0.2s;
-$grid-gap: 1rem;
-$card-padding: 1.25rem;
+$grid-gap: 1.25rem;
+$card-padding: 1.5rem;
 
 // Breakpoints
 $breakpoint-lg: 992px;
@@ -35,16 +33,121 @@ $breakpoint-md: 768px;
  * Main grid layout for the orders view
  */
 #orders-container {
-  padding: 0 1rem;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   gap: $grid-gap;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
 
   .orders-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: $grid-gap;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
     width: 100%;
+  }
+}
+
+/**
+ * Filter Buttons and Search Bar
+ */
+.orders-header {
+  background: $color-white;
+  padding: 1.25rem;
+  border-radius: $card-border-radius;
+  box-shadow: $card-shadow;
+  margin-bottom: 1.5rem;
+
+  .d-flex {
+    gap: 1.75rem;
+    align-items: center;
+  }
+
+  .btn-group {
+    flex-shrink: 0;
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-color: rgba(0, 0, 0, 0.1);
+      background-color: $color-white;
+      min-width: 3.5rem;
+      height: 2.75rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all $transition-speed ease;
+      color: $color-text-primary;
+
+      &:hover {
+        background-color: $color-text-secondary;
+        color: $color-white;
+        border-color: $color-text-secondary;
+      }
+
+      &.active {
+        background-color: $color-text-secondary;
+        color: $color-white;
+        border-color: $color-text-secondary;
+        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      &.btn-outline-black {
+        &:hover, &.active {
+          background-color: $color-text-secondary;
+          color: $color-white;
+        }
+      }
+
+      &.btn-outline-warning {
+        &:hover, &.active {
+          background-color: $color-text-secondary;
+          color: $color-white;
+          border-color: $color-text-secondary;
+        }
+      }
+
+      &.btn-outline-success {
+        &:hover, &.active {
+          background-color: $color-text-secondary;
+          color: $color-white;
+          border-color: $color-text-secondary;
+        }
+      }
+
+      i {
+        margin: 0;
+        font-size: 1rem;
+      }
+    }
+  }
+
+  .search-orders {
+    flex-grow: 1;
+    max-width: 500px;
+    margin-left: auto;
+
+    .input-group {
+      width: 100%;
+
+      .input-group-text {
+        background-color: transparent;
+        border-right: none;
+        padding: 0.625rem 0.75rem;
+        color: $color-text-secondary;
+      }
+
+      .form-control {
+        border-left: none;
+        padding: 0.625rem 0.75rem;
+        height: auto;
+
+        &::placeholder {
+          color: $color-text-secondary;
+          opacity: 0.7;
+        }
+      }
+    }
   }
 }
 
@@ -56,98 +159,98 @@ $breakpoint-md: 768px;
   background: $color-white;
   border-radius: $card-border-radius;
   border: 1px solid $border-color;
-  padding: $card-padding;
+  padding: 1.25rem;
+  transition: all $transition-speed ease;
+  box-shadow: $card-shadow;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+
+  &:hover {
+    box-shadow: $hover-shadow;
+    transform: translateY(-2px);
+  }
 
   .card-title {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
     font-weight: 600;
     color: $color-text-primary;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid $border-color;
   }
 
   .order-info {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
-  }
-}
-
-/**
- * Order Status
- * Status indicator styling with different states
- */
-.order-status {
-  font-size: 0.9rem;
-  padding: 0.25rem 0.5rem;
-  border-radius: $card-border-radius;
-  display: inline-block;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
-
-  &.open {
-    background-color: $status-open-bg;
-    color: $status-open-text;
+    gap: 1rem;
+    flex-grow: 1;
   }
 
-  &.closed {
-    background-color: $status-closed-bg;
-    color: $status-closed-text;
+  .order-status {
+    font-size: 0.813rem;
+    padding: 0.375rem 0.75rem;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 500;
+    width: fit-content;
+
+    &.open {
+      background-color: $status-open-bg;
+      color: $status-open-text;
+    }
+
+    &.closed {
+      background-color: $status-closed-bg;
+      color: $status-closed-text;
+    }
   }
 
-  &.pending {
-    background-color: $status-pending-bg;
-    color: $status-pending-text;
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
   }
-}
 
-/**
- * Contact Info & Order Type
- */
-.contact-info, .order-type {
-  font-size: 0.9rem;
-  color: $color-text-secondary;
-  line-height: 1.5;
-}
-
-/**
- * Action Buttons
- * Styling for action links (Details, Edit, Delete)
- */
-.order-card-btns-container {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.5rem;
-  padding-top: 0.5rem;
-  border-top: 1px solid $border-color;
-
-  a {
-    text-decoration: none;
-    font-size: 0.9rem;
+  .contact-info, .order-type {
+    font-size: 0.875rem;
     color: $color-text-secondary;
+    line-height: 1.5;
+  }
 
-    &.view-details {
-      color: $action-details;
-    }
+  .order-card-btns-container {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid $border-color;
 
-    &.edit {
-      color: $action-edit;
-    }
-
-    &.delete {
-      margin-left: auto;
+    a {
       text-decoration: none;
-      color: #dc3545;
+      font-size: 0.813rem;
+      font-weight: 500;
+      transition: color $transition-speed ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.375rem;
+
+      &.view-details {
+        color: $action-details;
+      }
+
+      &.edit {
+        color: $action-edit;
+      }
+
+      &.delete {
+        margin-left: auto;
+        color: $action-delete;
+      }
 
       &:hover {
-        color: darken(#dc3545, 10%);
+        opacity: 0.8;
       }
-    }
-
-    &:hover {
-      text-decoration: underline;
     }
   }
 }
@@ -197,17 +300,35 @@ $breakpoint-md: 768px;
 
 // Responsive Design
 @media (max-width: $breakpoint-lg) {
-  #orders-container .orders-grid {
-    grid-template-columns: repeat(2, 1fr);
+  #orders-container {
+    padding: 1.5rem;
+
+    .orders-grid {
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
   }
 }
 
 @media (max-width: $breakpoint-md) {
   #orders-container {
-    padding: 0.5rem;
+    padding: 1rem;
+
+    .orders-header {
+      .d-flex {
+        flex-direction: column;
+        gap: 1rem;
+        align-items: stretch;
+      }
+
+      .search-orders {
+        max-width: none;
+        margin-left: 0;
+      }
+    }
 
     .orders-grid {
       grid-template-columns: 1fr;
+      gap: 1rem;
     }
   }
 }

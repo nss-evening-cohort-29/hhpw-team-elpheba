@@ -44,7 +44,21 @@ const createOrder = (payload) => new Promise((resolve, reject) => {
     body: JSON.stringify(payload),
   })
     .then((response) => response.json())
-    .then((data) => resolve(data))
+    .then((data) => {
+      const firebaseKey = data.name;
+      const updatedPayload = { ...payload, firebaseKey };
+      // Update the order with the complete payload including firebaseKey
+      fetch(`${endpoint}/orders/${firebaseKey}.json`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedPayload),
+      })
+        .then((response) => response.json())
+        .then(() => resolve({ name: firebaseKey }))
+        .catch(reject);
+    })
     .catch(reject);
 });
 
