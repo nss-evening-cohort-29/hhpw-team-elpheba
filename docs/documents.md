@@ -646,26 +646,12 @@ if (value === 'test') { }
 - Descriptive messages
 - Reference issues/tickets
 
-## Testing
-
-### Unit Tests
-Run tests:
-```bash
-npm test
-```
-
-### E2E Tests
-Run end-to-end tests:
-```bash
-npm run test:e2e
-```
-
 ## Support and Contact
-Development Team:
-- Alyssa Cleland - Frontend Lead
-- Landon Borrego - Backend Lead
-- Omer Ozzy Akben - Full Stack Developer
-- Mike McGee - DevOps Engineer
+Development Team (Full Stack Developers):
+- Alyssa Cleland
+- Landon Borrego
+- Omer Ozzy Akben
+- Mike McGee
 
 ---
 
