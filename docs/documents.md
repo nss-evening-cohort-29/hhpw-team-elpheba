@@ -14,7 +14,7 @@
 
 ## Core Components
 
-### Navigation (`components/navbar.js`)
+### Navigation ([`components/navbar.js`](../components/navbar.js))
 The main navigation component that handles routing and user session management.
 
 **Component Structure:**
@@ -64,14 +64,14 @@ showAdminHome(e)
 - Dropdown menu support
 - Mobile menu toggle support
 
-### Buttons (`components/buttons/`)
+### Buttons ([`components/buttons/`](../components/buttons/))
 Reusable button components with consistent styling and behavior.
 
 ## Pages and Routing
 
 ### Order Management Pages
 
-#### Orders Page (`pages/ordersPage.js`)
+#### Orders Page ([`pages/ordersPage.js`](../pages/ordersPage.js))
 Main orders dashboard displaying all orders with filtering and search capabilities.
 
 **Key Functions:**
@@ -94,7 +94,7 @@ setupFilterButtons()
 // Sets up order status filter buttons
 ```
 
-#### Create Order Page (`pages/createOrderPage.js`)
+#### Create Order Page ([`pages/createOrderPage.js`](../pages/createOrderPage.js))
 Handles new order creation with form validation and submission.
 
 **Key Functions:**
@@ -106,7 +106,7 @@ handleOrderSubmit(e)
 handleOrderTypeChange(type)
 ```
 
-#### Close Order Page (`pages/closeOrderPage.js`)
+#### Close Order Page ([`pages/closeOrderPage.js`](../pages/closeOrderPage.js))
 Manages order completion and payment processing.
 
 **Key Functions:**
@@ -118,7 +118,7 @@ processPayment(orderDetails)
 updateOrderStatus(orderId, status)
 ```
 
-### Revenue Management (`pages/revenuePage.js`)
+### Revenue Management ([`pages/revenuePage.js`](../pages/revenuePage.js))
 Comprehensive revenue tracking and reporting system.
 
 **Key Components:**
@@ -211,7 +211,7 @@ renderErrorState(error)
 - Authentication checks
 - Network failure recovery
 
-### Admin Dashboard (`pages/adminPage.js`)
+### Admin Dashboard ([`pages/adminPage.js`](../pages/adminPage.js))
 Comprehensive administrative interface for system management and monitoring.
 
 **Core Functions:**
@@ -347,13 +347,13 @@ deleteOrder(orderId)
 
 ## Utility Functions
 
-### DOM Manipulation (`utils/renderToDom.js`)
+### DOM Manipulation ([`utils/renderToDom.js`](../utils/renderToDom.js))
 ```javascript
 renderToDOM(selector, content)
 // Safely updates DOM elements with new content
 ```
 
-### Data Clearing (`utils/clearDom.js`)
+### Data Clearing ([`utils/clearDom.js`](../utils/clearDom.js))
 ```javascript
 clearDom()
 // Cleans up DOM elements before new renders
@@ -362,7 +362,7 @@ clearDom()
 ## Forms and Validation
 
 ### Order Forms
-Located in `forms/` directory, handling:
+Located in [`forms/`](../forms/), handling:
 - Customer information
 - Order details
 - Payment information
@@ -375,7 +375,7 @@ Located in `forms/` directory, handling:
 
 ## Event Handling
 
-### Order Events (`events/`)
+### Order Events ([`events/`](../events/))
 Manages all order-related events:
 - Creation
 - Updates
@@ -397,7 +397,7 @@ The application uses a modular SCSS architecture for maintainable and scalable s
 
 ### Core Style Files
 
-#### Variables (`styles/_variables.scss`)
+#### Variables ([`styles/_variables.scss`](../styles/_variables.scss))
 Global style configuration.
 ```scss
 // Color palette
@@ -419,7 +419,7 @@ $breakpoint-md: ...
 $breakpoint-lg: ...
 ```
 
-#### Main Styles (`styles/main.scss`)
+#### Main Styles ([`styles/main.scss`](../styles/main.scss))
 Primary stylesheet that imports and coordinates all other style modules.
 ```scss
 // Import order:
@@ -433,7 +433,7 @@ Primary stylesheet that imports and coordinates all other style modules.
 
 ### Component Styles
 
-#### Admin Page (`styles/_adminPage.scss`)
+#### Admin Page ([`styles/_adminPage.scss`](../styles/_adminPage.scss))
 Styles for the administrative interface.
 ```scss
 // Dashboard layout
@@ -446,7 +446,7 @@ Styles for the administrative interface.
 .admin-action-btn { ... }
 ```
 
-#### Orders Page (`styles/_orders.scss`)
+#### Orders Page ([`styles/_orders.scss`](../styles/_orders.scss))
 Order management interface styling.
 ```scss
 // Order cards
@@ -459,7 +459,7 @@ Order management interface styling.
 .order-filters { ... }
 ```
 
-#### Revenue Page (`styles/_revenue.scss`)
+#### Revenue Page ([`styles/_revenue.scss`](../styles/_revenue.scss))
 Revenue tracking and reporting styles.
 ```scss
 // Revenue charts
@@ -472,7 +472,7 @@ Revenue tracking and reporting styles.
 .date-range-picker { ... }
 ```
 
-#### Navigation (`styles/_navbar.scss`)
+#### Navigation ([`styles/_navbar.scss`](../styles/_navbar.scss))
 Navigation component styling.
 ```scss
 // Main navigation
@@ -485,7 +485,7 @@ Navigation component styling.
 .user-controls { ... }
 ```
 
-#### Login Page (`styles/_loginPage.scss`)
+#### Login Page ([`styles/_loginPage.scss`](../styles/_loginPage.scss))
 Authentication interface styling.
 ```scss
 // Login form
@@ -572,7 +572,7 @@ npm run build
 ```
 
 ### Code Style
-The project uses ESLint with the Airbnb base configuration (`eslint-config-airbnb-base`).
+The project uses ESLint with the Airbnb base configuration ([`eslint-config-airbnb-base`](https://www.npmjs.com/package/eslint-config-airbnb-base)).
 
 **Airbnb Style Guide:**
 The Airbnb JavaScript Style Guide is one of the most popular coding style guides in the JavaScript community. It provides a set of rules and best practices for writing clean, maintainable JavaScript code.
@@ -660,7 +660,7 @@ Version: 1.0.0
 
 ## API Integration
 
-### Orders API (`api/orders.js`)
+### Orders API ([`api/orders.js`](../api/orders.js))
 Handles all order-related API operations.
 
 **Key Methods:**
@@ -687,7 +687,7 @@ deleteOrder(firebaseKey)
 // - firebaseKey: Order identifier
 ```
 
-### Order Items API (`api/orderItems.js`)
+### Order Items API ([`api/orderItems.js`](../api/orderItems.js))
 Manages individual items within orders.
 
 **Methods:**
@@ -714,15 +714,15 @@ deleteOrderItem(firebaseKey)
 // - firebaseKey: Item identifier
 ```
 
-### Menu API (`api/menu.js`)
+### Menu API ([`api/menu.js`](../api/menu.js))
 Handles menu item management.
 
-### Users API (`api/users.js`)
+### Users API ([`api/users.js`](../api/users.js))
 Manages user data and authentication.
 
 ## Event Handling
 
-### Navigation Events (`events/navigationEvents.js`)
+### Navigation Events ([`events/navigationEvents.js`](../events/navigationEvents.js))
 Handles all navigation-related events.
 
 **Event Handlers:**
@@ -735,7 +735,7 @@ setupNavigationEvents()
 // - Authentication state changes
 ```
 
-### DOM Events (`events/domEvents.js`)
+### DOM Events ([`events/domEvents.js`](../events/domEvents.js))
 Manages interactive elements and UI events.
 
 **Key Features:**
@@ -748,7 +748,7 @@ setupDomEvents()
 // - Dynamic content updates
 ```
 
-### Form Events (`events/formEvents.js`)
+### Form Events ([`events/formEvents.js`](../events/formEvents.js))
 Handles form submissions and validation.
 
 **Event Handlers:**
@@ -763,7 +763,7 @@ setupFormEvents()
 
 ## Utility Functions
 
-### Helper Functions (`utils/helperFunctions.js`)
+### Helper Functions ([`utils/helperFunctions.js`](../utils/helperFunctions.js))
 Common utility functions used throughout the application.
 
 **Key Functions:**
@@ -781,7 +781,7 @@ getUniqueCustomers(orders)
 // Customer tracking
 ```
 
-### Authentication (`utils/auth.js`)
+### Authentication ([`utils/auth.js`](../utils/auth.js))
 Firebase authentication integration.
 
 **Methods:**
@@ -796,7 +796,7 @@ signOut()
 // Handles user sign-out
 ```
 
-### View Director (`utils/viewDirector.js`)
+### View Director ([`utils/viewDirector.js`](../utils/viewDirector.js))
 Manages view routing and rendering.
 
 **Functions:**
@@ -808,7 +808,7 @@ viewDirector()
 // - User permissions
 ```
 
-### Client Setup (`utils/client.js`)
+### Client Setup ([`utils/client.js`](../utils/client.js))
 Firebase client configuration and setup.
 
 **Configuration:**
@@ -823,7 +823,7 @@ client
 
 ## Project Configuration
 
-### Webpack Setup (`webpack.config.js`)
+### Webpack Setup ([`webpack.config.js`](../webpack.config.js))
 Webpack configuration for building and bundling the application.
 
 **Key Features:**
@@ -855,7 +855,7 @@ module.exports = {
 }
 ```
 
-### Package Configuration (`package.json`)
+### Package Configuration ([`package.json`](../package.json))
 Project dependencies and scripts.
 
 **Key Scripts:**
@@ -875,7 +875,7 @@ Project dependencies and scripts.
 - FontAwesome 5.14.0
 - Other development tools
 
-### Environment Configuration (`.env`)
+### Environment Configuration ([`.env`](../.env))
 Environment variables for configuration.
 ```
 FIREBASE_API_KEY=xxx
@@ -884,7 +884,7 @@ DATABASE_URL=xxx
 PROJECT_ID=xxx
 ```
 
-### ESLint Configuration (`.eslintrc`)
+### ESLint Configuration ([`.eslintrc`](../.eslintrc))
 Code style and quality rules.
 ```json
 {
@@ -895,7 +895,7 @@ Code style and quality rules.
 }
 ```
 
-### Application Entry (`startApp.js`)
+### Application Entry ([`startApp.js`](../startApp.js))
 Application initialization and setup.
 ```javascript
 // Firebase initialization
@@ -906,13 +906,13 @@ Application initialization and setup.
 
 ## Contributing
 
-### Issue Template (`ISSUE_TEMPLATE.md`)
+### Issue Template ([`ISSUE_TEMPLATE.md`](../ISSUE_TEMPLATE.md))
 Template for creating new issues:
 - Bug reports
 - Feature requests
 - Documentation updates
 
-### Pull Request Template (`PULL_REQUEST_TEMPLATE.md`)
+### Pull Request Template ([`PULL_REQUEST_TEMPLATE.md`](../PULL_REQUEST_TEMPLATE.md))
 Template for submitting pull requests:
 - Description of changes
 - Related issues
@@ -943,20 +943,20 @@ hhpw-team-elpheba/
 
 ### Key Directories
 
-#### Public Directory (`public/`)
+#### Public Directory ([`public/`](../public/))
 Static files served directly:
 - HTML templates
 - Images
 - Fonts
 - Favicons
 
-#### Assets Directory (`assets/`)
+#### Assets Directory ([`assets/`](../assets/))
 Source assets:
 - Images
 - Icons
 - Media files
 
-#### Shared Directory (`shared/`)
+#### Shared Directory ([`shared/`](../shared/))
 Common utilities and components:
 - Constants
 - Types
