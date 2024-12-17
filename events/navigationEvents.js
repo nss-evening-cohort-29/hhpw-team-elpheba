@@ -15,10 +15,20 @@ const clearMainContainer = () => {
   `;
 };
 
+const collapseNavbar = () => {
+  const navbarCollapse = document.querySelector('.navbar-collapse');
+  if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+    navbarCollapse.classList.remove('show');
+  }
+};
+
 const addClickHandler = (elementId, handler) => {
   const element = document.querySelector(elementId);
   if (element) {
-    element.addEventListener('click', handler);
+    element.addEventListener('click', (e) => {
+      handler(e);
+      collapseNavbar(); // Collapse navbar after handling click
+    });
   }
 };
 

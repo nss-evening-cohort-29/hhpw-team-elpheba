@@ -73,6 +73,11 @@ const navBar = (user) => {
   // Set initial active state
   setActiveLink(currentPage);
 
+  // Immediately render the admin dashboard if the current page is admin-home
+  if (currentPage === 'admin-home') {
+    showAdminDashboard(user);
+  }
+
   // Add click event listeners
   const navLinks = document.querySelectorAll('.nav-link');
   navLinks.forEach((link) => {

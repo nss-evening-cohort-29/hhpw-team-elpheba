@@ -151,7 +151,7 @@ const revenuePage = async () => {
 
         <!-- Period Stats -->
         <div class="row g-4 mb-4 period-stats">
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Period Revenue</h5>
@@ -159,15 +159,7 @@ const revenuePage = async () => {
               </div>
             </div>
           </div>
-          <div class="col-md-3">
-            <div class="card">
-              <div class="card-body">
-                <h5 class="card-title">Period Tips</h5>
-                <p class="card-text h2">${formatCurrency(revenueData.totalTips)}</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Period Orders</h5>
@@ -175,7 +167,7 @@ const revenuePage = async () => {
               </div>
             </div>
           </div>
-          <div class="col-md-3">
+          <div class="col-md-4">
             <div class="card">
               <div class="card-body">
                 <h5 class="card-title">Average Order Value</h5>
