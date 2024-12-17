@@ -37,20 +37,17 @@ const createOrderCard = (item) => {
 // Updates the visibility of order cards based on search term and status filter
 const updateOrderVisibility = (searchTerm = '', statusFilter = 'all') => {
   const orderCards = document.querySelectorAll('.order-card');
-  const searchLower = searchTerm.toLowerCase();
+  const searchLower = searchTerm.toLowerCase().trim();
+  const statusLower = statusFilter.toLowerCase().trim();
 
   orderCards.forEach((orderCard) => {
     const cardContent = orderCard.textContent.toLowerCase();
-    const cardStatus = orderCard.dataset.status;
+    const cardStatus = orderCard.dataset.status.toLowerCase().trim();
     const matchesSearch = cardContent.includes(searchLower);
-    const matchesStatus = statusFilter === 'all' || cardStatus === statusFilter;
+    const matchesStatus = statusLower === 'all' || cardStatus === statusLower;
 
-    // Use classList instead of style.display
-    if (matchesSearch && matchesStatus) {
-      orderCard.classList.remove('d-none');
-    } else {
-      orderCard.classList.add('d-none');
-    }
+    // Use a single toggle call with computed visibility
+    orderCard.classList.toggle('d-none', !(matchesSearch && matchesStatus));
   });
 };
 
@@ -67,19 +64,30 @@ const setupSearch = (searchInput) => {
 
 // Sets up filter buttons functionality
 const setupFilterButtons = () => {
-  const filterButtons = document.querySelectorAll('.filter-btn');
-  filterButtons.forEach((button) => {
-    button.addEventListener('click', (e) => {
-      // Remove active class from all buttons
-      filterButtons.forEach((btn) => btn.classList.remove('active'));
-      // Add active class to clicked button
-      const clickedButton = e.target;
-      clickedButton.classList.add('active');
+  const ordersContainer = document.querySelector('.orders-container');
+  if (!ordersContainer) return;
 
-      const searchInput = document.querySelector('#search-orders-input');
-      const searchTerm = searchInput ? searchInput.value : '';
-      updateOrderVisibility(searchTerm, clickedButton.dataset.filter);
-    });
+  const btnGroup = ordersContainer.querySelector('.btn-group');
+  if (!btnGroup) return;
+
+  btnGroup.addEventListener('click', (e) => {
+    const filterButton = e.target.closest('.filter-btn');
+    if (!filterButton) return;
+
+    e.preventDefault();
+    e.stopPropagation();
+
+    const filterButtons = btnGroup.querySelectorAll('.filter-btn');
+
+    filterButtons.forEach((btn) => btn.classList.remove('active'));
+
+    filterButton.classList.add('active');
+
+    const searchInput = document.querySelector('#search-orders-input');
+    const searchTerm = searchInput ? searchInput.value : '';
+
+    // Update visibility with the clicked button's filter
+    updateOrderVisibility(searchTerm, filterButton.dataset.filter);
   });
 };
 
@@ -92,21 +100,34 @@ const showOrders = (array, defaultFilter = 'all') => {
     return;
   }
 
+  // Sort the array to show 'open' orders first
+  const sortedArray = [...array].sort((a, b) => {
+    const statusA = a.status.toLowerCase();
+    const statusB = b.status.toLowerCase();
+
+    // 'open' orders should come first
+    if (statusA === 'open' && statusB !== 'open') return -1;
+    if (statusA !== 'open' && statusB === 'open') return 1;
+
+    // For orders with the same status, maintain their original order
+    return 0;
+  });
+
   const domString = `
     <div class="orders-container">
       <div class="orders-header mb-4">
         <div class="d-flex align-items-center gap-2">
           <div class="btn-group me-3" role="group" aria-label="Order filters">
             <button class="btn btn-outline-black filter-btn ${defaultFilter === 'all' ? 'active' : ''}" data-filter="all">
-              <i class="fas fa-list me-1"></i>
+              <i class="fas fa-list me-1"> All </i>
             </button>
             <button class="btn btn-outline-warning filter-btn ${defaultFilter === 'open' ? 'active' : ''}" data-filter="open">
               <i class="fas fa-clock"></i>
-              <span class="visually-hidden">Open Orders</span>
+              <span>Open</span>
             </button>
             <button class="btn btn-outline-success filter-btn ${defaultFilter === 'closed' ? 'active' : ''}" data-filter="closed">
               <i class="fas fa-check-circle"></i>
-              <span class="visually-hidden">Closed Orders</span>
+              <span>Closed</span>
             </button>
           </div>
           <div class="search-orders flex-grow-1">
@@ -120,7 +141,7 @@ const showOrders = (array, defaultFilter = 'all') => {
         </div>
       </div>
       <div class="orders-grid">
-        ${array.map(createOrderCard).join('')}
+        ${sortedArray.map(createOrderCard).join('')}
       </div>
     </div>`;
 
