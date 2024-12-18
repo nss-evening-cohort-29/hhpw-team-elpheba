@@ -30,7 +30,7 @@ const renderErrorState = (error) => `
 const updateStats = (revenueData) => {
   const values = [
     formatCurrency(revenueData.totalRevenue),
-    formatCurrency(revenueData.totalTips),
+    // formatCurrency(revenueData.totalTips),
     revenueData.orderCount,
     formatCurrency(revenueData.averageOrderValue)
   ];
